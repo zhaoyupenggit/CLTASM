@@ -1,0 +1,11 @@
+调用dosbox编译汇编程序代码
+> D:\DOS\DOSBox.exe  -c "mount c d:dos\asm" -c "c:" -c "del tasm\t.*" -c "copy code\$(NAME_PART).asm tasm\t.asm"-c "cd tasm" -c "tasm/t/zi t.asm" -c "tlink/v/3 t.obj" -c "t.exe" -c "echo off"
+
+> 
+D:\DOS\DOSBox.exe -noautoexec -c "mount c d:dos\asm\tasm" -c "mount d \"$(CURRENT_DIRECTORY)\"" -c "c:" -c "del t.*" -c "copy d:\$(NAME_PART).asm c:\t.asm"-c "tasm/t/zi t.asm" -c "tlink/v/3 t.obj" -c "t.exe" 
+-c "echo off"
+
+E
+A	
+B
+PROG

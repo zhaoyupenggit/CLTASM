@@ -1,0 +1,54 @@
+; 例：A、B两机利用主串口，查询方式，进行单工通信，A机发送电文“HELLO”至B机。试为A机编写发送程序。
+; 要求：波特率=2400，奇校验，停止位1位，数据位7位，采用查询方式。
+.586
+DATA	SEGMENT  USE16
+	BUF	    DB	'HELLO'
+	LEN     EQU	$ - BUF
+	DATA    ENDS
+CODE	SEGMENT USE16
+ASSUME    CS:CODE , DS:DATA
+BEG:	MOV  AX , DATA
+		MOV	 DS , AX
+		
+		CALL	I8250
+		LEA	BX, BUF
+		MOV	CX, LEN
+        SCAN:	MOV	DX, 3FDH
+		TEST	AL, 20H
+		JZ	SCAN
+		MOV	DX, 3F8H
+		MOV	AL, [BX]
+		OUT    DX, AL
+		INC      BX
+		LOOP  SCAN
+NEXT:   MOV    DX, 3FDH
+        IN        AL, DX
+        TEST   AL, 40H
+        JZ        NEXT
+        MOV   AH, 4CH
+        INT      21H
+
+I8250	PROC
+	MOV	DX, 3FBH
+	MOV	AL, 80H
+	OUT	DX, AL
+	MOV	DX, 3F9H
+	MOV	AL, 0
+	OUT	DX, AL
+	MOV	DX, 3F8H
+	MOV	AL, 30H
+	OUT	DX, AL
+	MOV	DX, 3FBH
+	MOV	AL, 00001010B
+	OUT	DX, AL
+	MOV	DX, 3F9H
+	MOV	AL, 0
+	OUT	DX, AL
+    MOV	DX, 3FCH
+	MOV	AL, 0
+	OUT	DX, AL
+	RET
+I8250	ENDP
+
+CODE	ENDS
+	END	BEG
