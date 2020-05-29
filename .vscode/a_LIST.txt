@@ -5,3 +5,9 @@ D:\DOS\DOSBox.exe -noautoexec -c "mount c d:dos\asm\tasm" -c "mount d \"$(CURREN
 -c "echo off"
 #### 先是使用
 cmd /k copy "$(FULL_CURRENT_PATH)" "d:dos\asm\tasm" & D:\DOS\DOSBox.exe -noautoexec -c "mount c d:dos\asm\tasm" -c "mount d \"$(CURRENT_DIRECTORY)\"" -c "c:" -c "del t.*" -c "copy d:\$(NAME_PART).asm c:\t.asm"-c "tasm/t/zi t.asm" -c "tlink/v/3 t.obj" -c "t.exe" 
+
+
+https://code.visualstudio.com/docs/editor/tasks-appendix
+https://code.visualstudio.com/docs/editor/variables-reference
+https://code.visualstudio.com/docs/editor/tasks#vscode
+https://mp.weixin.qq.com/s?src=11&timestamp=1590765867&ver=2368&signature=eMlGYUP1rtFLztlNQTMCCc1gEULwob2t25Z2boNn9SDZUtsdL3HWbYmNuH7T6ldHEfTkBK0aucgtgPyHZ-DifJsBPmVfkwTgPJgSpo7imlRlZM77p6chXcM5WlShGVVp&new=1
