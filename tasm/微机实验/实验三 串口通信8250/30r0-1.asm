@@ -1,4 +1,4 @@
-
+;将打印字符改成BIOS的功能调用
 .586
 DATA	SEGMENT USE16
 TEXT	DB    'THE tie tied the tiger'
@@ -30,12 +30,11 @@ RSCAN:	MOV     DX,3FDH         ;通信线状态寄存器
         DEC     SI		;SI从FFFFH到0000H,共65536
         JNZ     RSCAN  		;延时
         JMP     DISPERR	;超时,转出错处理
-REVEICE:MOV     DX,3F8H          ;发送保持寄存器/**接收缓冲寄存器**
+REVEICE:MOV     DX,3F8H         ;发送保持寄存器/**接收缓冲寄存器**
         IN      AL,DX		;读数据寄存器
         AND     AL,7FH
-DISP:	MOV     AH, 2
-        MOV     DL, AL
-        INT     21H   		;屏幕显示
+DISP:	MOV     AH, 0eh
+        INT     10H   		;屏幕显示
         INC     BX
         DEC     CL  		;计数
         JNZ     TSCAN

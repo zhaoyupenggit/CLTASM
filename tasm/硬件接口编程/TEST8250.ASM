@@ -1,12 +1,20 @@
-;TEST 8250
+;TEST 8250 发送中断
+;当8250设置为内环自检方式的时候，只能采用查询方式，而且只能采用对端口直接操作的编程手段，完成数据的发送和接收。
+;所以这种方法无法实现
 DATA  SEGMENT USE16
    OLD0C   DW ?
+   TEXT	DB    'THE tie tied the tiger'
+LLL	EQU     $-TEXT
    DATA ENDS
 CODE SEGMENT USE16
 ASSUME CS:CODE,DS:DATA
 BEG:    MOV AX,DATA
         MOV DS,AX
-
+        TSCAN:	MOV     DX,3FDH
+        IN      AL,DX
+        TEST    AL,20H   	;发送保持寄存器空 ?
+        JZ      TSCAN  		;否
+        MOV     BX,OFFSET TEXT
         CLI
         CALL I8250
         CALL I8259
@@ -20,16 +28,17 @@ CIR:    DEC SI
         JZ EXIT
         JMP CIR
 CLI
- EXIT:       CALL  RESET
+ EXIT:  CALL  RESET
         STI
         MOV AH,4CH
         INT 21H
 ;------------
 SERVICE PROC
-        cli 
         PUSH  AX
         PUSH  DX
         PUSH  DS
+ SEND: 	MOV     DX,3F8H
+        OUT     DX,AL 		;送主串口数据寄存器
         MOV AL,'S';TEST
         MOV AH,0EH
         INT 16H
@@ -37,7 +46,6 @@ SERVICE PROC
         POP DS
         POP DX
         POP AX
-        sti
         IRET
         SERVICE ENDP
 I8250	PROC
@@ -56,7 +64,7 @@ I8250	PROC
 	;0非除数寄存器0正常通信001奇效验0一位停止位107位数据位（ASCII码为七位）
 	OUT	DX, AL
 	MOV	DX, 3F9H;访问中断允许寄存器
-	MOV	AL, 01H;允许送出接收和接收中断
+	MOV	AL, 02H;d0接收中断请求 d1发送中断请求 d2接收出错 d3modern状态改变
 	OUT	DX, AL
     MOV	DX, 3FCH;modem控制寄存器
 	MOV	AL, 18H;D4置1，内环自检，允许送出中断请求
