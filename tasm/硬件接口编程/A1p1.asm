@@ -1,3 +1,5 @@
+;日时钟中断，不精确计时
+;使用1cH
 .486
 DATA      SEGMENT USE16
 MESG	  DB       'HELLO!',0DH,0AH,'$' ;要打印的串
