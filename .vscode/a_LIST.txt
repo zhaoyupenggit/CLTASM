@@ -1,0 +1,7 @@
+## 调用dosbox编译汇编程序代码
+### notepad++
+
+D:\DOS\DOSBox.exe -noautoexec -c "mount c d:dos\asm\tasm" -c "mount d \"$(CURRENT_DIRECTORY)\"" -c "c:" -c "del t.*" -c "copy d:\$(NAME_PART).asm c:\t.asm"-c "tasm/t/zi t.asm" -c "tlink/v/3 t.obj" -c "t.exe" 
+-c "echo off"
+#### 先是使用
+cmd /k copy "$(FULL_CURRENT_PATH)" "d:dos\asm\tasm" & D:\DOS\DOSBox.exe -noautoexec -c "mount c d:dos\asm\tasm" -c "mount d \"$(CURRENT_DIRECTORY)\"" -c "c:" -c "del t.*" -c "copy d:\$(NAME_PART).asm c:\t.asm"-c "tasm/t/zi t.asm" -c "tlink/v/3 t.obj" -c "t.exe" 

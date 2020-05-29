@@ -1,0 +1,84 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        //以下四个人物是汇编语言的任务，建议使用编辑器的替换功能替换吊这些字符串，也可手动
+        //${workspaceRoot}\\ASM\\TASM                   为 汇编工具的安装目录
+        //${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe"   为 dosbox程序的地址
+        {//清除原来的测试文件
+            "label":"deltest",
+            "command":"del",
+            "type":"shell",
+            "args":[
+                {
+                    "value": "${workspaceRoot}\\ASM\\TASM\\test.*",//第一处 汇编工具目录 删除汇编工具目录的原来汇编留下的测试程序
+                    "quoting": "strong"
+                }
+            ]
+        },
+        {//将需要汇编的源代码复制到汇编工具所在文件夹
+            "label":"copyasm",
+            "type":"shell",
+            "command":"copy",
+            "args": [
+                {
+                  "value": "${file}",
+                  "quoting": "strong"
+                },
+                {
+                    "value": "${workspaceRoot}\\ASM\\TASM\\test.asm",//第二处 汇编工具目录 将需要汇编的源代码（vscode当前文件）复制到汇编工具所在目录
+                    "quoting": "strong"
+                  }
+                ],
+            "problemMatcher": [],
+            "dependsOn": ["deltest"]
+        },
+        {//调用dosbox来编译链接运行程序
+            "label": "dosboxtasm",
+            "type": "shell",
+            "command":
+            "${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe",//第一处 dosbox程序所在地址 这里填dosbox.exe的位置，${workspaceRoot}表示当前工作目录
+            "args": [
+                "-noautoexe",
+                "-c",
+                "mount c '${workspaceRoot}\\ASM\\TASM'",//第三处 汇编工具目录
+                "-c",
+                "c:",
+                "-c",
+                "tasm/t/zi test",
+                "-c",
+                "tlink/v/3 test",
+                "-c",
+                "test",
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": ["copyasm"]
+        },
+        {//调用dosbox来编译链接运行程序
+            "label": "tdt",
+            "type": "shell",
+            "command":
+            "${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe",//第二处 dosbox.exe的位置 ${workspaceRoot}表示当前工作目录
+            "args": [
+                "-noautoexe",
+                "-c",
+                "mount c '${workspaceRoot}\\ASM\\TASM'",//第四处 汇编工具目录
+                "-c",
+                "c:",
+                "-c",
+                "tasm/t/zi test",
+                "-c",
+                "tlink/v/3 test",
+                "-c",
+                "td test",
+            ],
+            "problemMatcher": [],
+            "dependsOn": ["copyasm"]
+        }
+    ]
+}

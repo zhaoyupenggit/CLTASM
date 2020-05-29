@@ -1,3 +1,4 @@
+;检测键盘是否有输入
 ;example of BIOS 16h 00 01 function
 .586
 DATA SEGMENT USE16

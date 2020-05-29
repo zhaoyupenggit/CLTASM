@@ -1,4 +1,3 @@
 # dosbox和tasm编译环境
 /tasm/ASM/*
 /work/*
-.vscode/tasks.json

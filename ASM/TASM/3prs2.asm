@@ -1,70 +1,53 @@
-;查询发 中断收
-;从键盘输入字符串
-
+;8250串口通信 查询发中断收的程序代码
 .586
 DATA	SEGMENT  USE16
-        OLD0C   DD ?
-        FLAG    DB 0
-        INPUT   DB 'PLEASE INPUT ONE MESSAGE WITHIN 30CHARS',0AH,0DH,'$'
-        MESG    DB ' ARE YOUR STRING',0AH,0DH,0AH,0DH,'$'
-         ERROR DB      'COM1 BAD !',0DH,0AH,'$'
-        COMF    DB 'YOUR INPUT IS$'
-		BUF	    DB	30
-                DB  ?
-                DB  30 DUP(?)
-                DB  10 DUP('$')
-		DATA    ENDS
+        OLD0C   DD ?;用来存储中断向量
+        FLAG    DB 0;标志位
+	    BUF	    DB 'B18040215'
+        LENS   =$-BUF
+DATA    ENDS
 
 CODE	SEGMENT USE16
 		ASSUME    CS:CODE , DS:DATA
         
 BEG:	MOV  AX , DATA
 		MOV	 DS , AX	
-        CLI
-        CALL I8259
-        CALL RD0C
-        CALL WR0C	
-		CALL	I8250;进行初始化
-        ;键入需要显示的字符串
-        LEA DX,INPUT
-        MOV AH,9
-        INT 21H
-        MOV AH,0AH
-        mov DX,OFFSET BUF
-        INT 21H
-		LEA	BX, BUF
-        INC BX
-        MOV CX,0
-        MOV	CL, [BX]
-        INC BX	
-        
-        MOV SI,CX
-        MOV WORD PTR [BX+SI],'$'
-        MOV DX,BX
-        MOV AH,9
-        INT 21H
-        LEA DX,MESG
-        MOV AH,9
-        INT 21H
-        ;开启循环体
-FIRST:   MOV FLAG,0	
+        CLI             ;关中断
+        CALL I8259      ;中断控制器初始化
+        CALL RD0C       ;读主串口中断对应的中断向量
+        CALL WR0C       ;写中断向量
+		CALL I8250      ;串口芯片初始化
+        STI             ;开中断
+		LEA	 BX, BUF    ;读取内存中需要发送的信息及其长度
+        MOV	 CX, LENS   
+        ;循环体
 		;利用查询方式发送字符
-SCAN:	MOV	DX, 3FDH;通信线状态寄存器
-		IN AL,DX
-		TEST	AL, 20H;查询D5位：发送保持寄存器空闲标志位。D5＝1，表示数据已从发送保持寄存器转移到发送移位寄存器，发送保持寄存器空闲，CPU可以写入新数据。当新数据送入发送保持寄存器后， D5置0。
-		JZ	SCAN;如果允许通信就继续下一步
-		MOV	DX, 3F8H
-		MOV	AL, [BX]
-		OUT    DX, AL;逐字节发送需要发送的数据	
-NEXT:   MOV    DX, 3FDH
-        IN        AL, DX
-        TEST   AL, 41H;D6位：发送移位寄存器空闲标志位。D6＝1，表示一帧数据已发送完毕。当下一个数据由发送保持寄存器移入发送移位寄存器时，该位被置0。
-		JZ        NEXT
-        STI
-SCANT:  CMP FLAG,1
-        JNZ  SCANT
-        CLI
-        INC      BX
+FIRST:  MOV     FLAG,0      ;不使用flag作为标志的话这一步不需要
+SCAN:	MOV	    DX, 3FDH    ;通信线状态寄存器
+		IN      AL,DX
+		TEST    AL, 20H     ;查询D5位：发送保持寄存器空闲标志位。D5＝1，表示数据已从发送保持寄存器转移到发送移位寄存器，发送保持寄存器空闲，CPU可以写入新数据。当新数据送入发送保持寄存器后， D5置0。
+		JZ      SCAN        ;如果允许通信就继续下一步
+		MOV     DX, 3F8H
+		MOV     AL, [BX]
+		OUT     DX, AL      ;逐字节发送需要发送的数据	
+        JMP     WAY2       ;选择不同的方法实现“等待数据发完”
+;方法一：反复查询是否接收完数据
+WAY0:   CMP     FLAG,1
+        JNZ     WAY0
+        JMP     GOK
+;方法二：反复检查发送移位寄存器，判断数据是否发完
+WAY1:   MOV     DX, 3FDH    ;D0位：接收数据准备好(接收缓冲器满)标志位
+        IN      AL, DX
+        TEST    AL, 40H     ;D6位：发送移位寄存器空闲标志位。D6＝1，表示一帧数据已发送完毕。当下一个数据由发送保持寄存器移入发送移位寄存器时，该位被置0。
+		JZ      WAY1
+        JMP     GOK
+;方法三：通过延时的方式，等待数据发送完,会拖慢程序
+WAY2:   MOV     SI,0
+DELAY:  DEC     SI
+        CMP     SI,0
+        JNZ     DELAY
+
+GOK:    INC      BX
         LOOP  FIRST
         CALL  RESET
         MOV AH,4CH
@@ -79,14 +62,9 @@ RECEIVE PROC
         MOV   DX,3F8H
         IN    AL,DX;读取接收缓冲区的内容
         AND   AL,7FH
-        CMP   AL,03H;判断是否为结束字符      
-        JZ    NEX
-
         MOV AH,2
         MOV DL,AL
         INT 21H;显示字符
-        MOV FLAG,1
-        JMP EXIT
 NEX:    MOV FLAG,1
 EXIT:   MOV AL,20H
         OUT 20H,AL;中断结束
@@ -146,7 +124,7 @@ RESET PROC
     IN AL,21H
     OR AL,00010000B
     OUT 21H,AL
-    MOV AX,250CH
+    MOV AX,250CH;21h的25H功能用来写中断向量
     MOV DX,WORD PTR OLD0C
     MOV DS,WORD PTR OLD0C+2
     INT 21H
