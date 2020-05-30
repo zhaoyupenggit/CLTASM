@@ -5,13 +5,10 @@ DATA	SEGMENT  USE16
         OLD0C   DD ?
         FLAG    DB 0
         INPUT   DB 'PLEASE INPUT ONE MESSAGE WITHIN 30CHARS',0AH,0DH,'$'
-        MESG    DB 'IS YOUR STRING WE WILL SEND',0AH,0DH,0AH,0DH,'THE STRING I GET IS:$'
-        ; ERROR DB      'COM1 BAD !',0DH,0AH,'$'
-        COMF    DB 'YOUR INPUT IS$'
+        MESG    DB ' is the string I send',0AH,0DH,0AH,0DH,'THE STRING I GET IS:$'
 		BUF	    DB	30
                 DB  ?
                 DB  30 DUP(?)
-                DB  10 DUP('$')
 		DATA    ENDS
 
 CODE	SEGMENT USE16
@@ -47,19 +44,19 @@ BEG:	MOV  AX , DATA
         MOV AH,9
         INT 21H
         ;开启循环体
-FIRST:   MOV FLAG,0	
 		;利用查询方式发送字符
 SCAN:	MOV	DX, 3FDH;通信线状态寄存器
 		IN AL,DX
 		TEST	AL, 20H;查询D5位：发送保持寄存器空闲标志位。D5＝1，表示数据已从发送保持寄存器转移到发送移位寄存器，发送保持寄存器空闲，CPU可以写入新数据。当新数据送入发送保持寄存器后， D5置0。
 		JZ	SCAN;如果允许通信就继续下一步
-		MOV	DX, 3F8H
+SEND:	MOV	DX, 3F8H
 		MOV	AL, [BX]
 		OUT    DX, AL;逐字节发送需要发送的数据	
+		INC      BX
+		MOV FLAG,0
 SCANT:  CMP FLAG,1
-        JNZ  SCANT
-        INC      BX
-        LOOP  FIRST
+        JNZ  SCANT  
+        LOOP  SEND
         CALL  RESET
         MOV AH,4CH
         INT 21H
@@ -72,15 +69,9 @@ RECEIVE PROC
         MOV   DS,AX
         MOV   DX,3F8H
         IN    AL,DX;读取接收缓冲区的内容
-        AND   AL,7FH
-        CMP   AL,03H;判断是否为结束字符      
-        JZ    NEX
-
         MOV AH,2
         MOV DL,AL
         INT 21H;显示字符
-        MOV FLAG,1
-        JMP EXIT
 NEX:    MOV FLAG,1
 EXIT:   MOV AL,20H
         OUT 20H,AL;中断结束
