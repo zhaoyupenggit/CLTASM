@@ -1,3 +1,6 @@
-# dosbox和tasm编译环境
-/tasm/ASM/*
+# 测试文件
 /work/*
+
+# 汇编留下的临时文件
+/ASM/TASM/TEST.*
+/ASM/MASM/TEST.*

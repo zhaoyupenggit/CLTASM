@@ -6,8 +6,8 @@
         //以下四个人物是汇编语言的任务，建议使用编辑器的替换功能替换吊这些字符串，也可手动
         //${workspaceRoot}\\ASM\\TASM                   为 汇编工具的安装目录
         //${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe"   为 dosbox程序的地址
-        {//清除原来的测试文件
-            "label":"deltest",
+        {
+            "label":"deltest",//清除原来的测试文件
             "command":"del",
             "type":"shell",
             "args":[
@@ -17,8 +17,8 @@
                 }
             ]
         },
-        {//将需要汇编的源代码复制到汇编工具所在文件夹
-            "label":"copyasm",
+        {
+            "label":"copytotest",//将需要汇编的源代码复制到汇编工具所在文件夹
             "type":"shell",
             "command":"copy",
             "args": [
@@ -34,8 +34,8 @@
             "problemMatcher": [],
             "dependsOn": ["deltest"]
         },
-        {//调用dosbox来编译链接运行程序
-            "label": "dosboxtasm",
+        {
+            "label": "dosboxtasm",//调用dosbox来编译链接运行程序
             "type": "shell",
             "command":
             "${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe",//第一处 dosbox程序所在地址 这里填dosbox.exe的位置，${workspaceRoot}表示当前工作目录
@@ -57,10 +57,10 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "dependsOn": ["copyasm"]
+            "dependsOn": ["copytotest"]
         },
-        {//调用dosbox来编译链接运行程序
-            "label": "tdt",
+        {
+            "label": "tdt",//调用dosbox来编译链接运行程序
             "type": "shell",
             "command":
             "${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe",//第二处 dosbox.exe的位置 ${workspaceRoot}表示当前工作目录
