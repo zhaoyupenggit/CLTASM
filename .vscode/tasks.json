@@ -18,7 +18,7 @@
             ],
             "presentation": {
                 "echo": true,
-                "reveal": "always",
+                "reveal": "never",
                 "focus": false,
                 "panel": "shared",
                 "showReuseMessage": false,
@@ -41,7 +41,7 @@
                 ],
                 "presentation": {
                 "echo": true,
-                "reveal": "always",
+                "reveal": "never",
                 "focus": false,
                 "panel": "shared",
                 "showReuseMessage": false,
@@ -51,12 +51,13 @@
             
         },
         {
-            "label": "dosboxtasm",//调用dosbox来编译链接运行程序
+            "label": "DosboxTasmCurrentFile",//调用dosbox来编译链接运行程序
             "type": "shell",
             "command":
             "${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe",//第一处 dosbox程序所在地址 这里填dosbox.exe的位置，${workspaceRoot}表示当前工作目录
             "args": [
                 "-noautoexe",
+                "-noconsole",
                 "-c",
                 "mount c '${workspaceRoot}\\ASM\\TASM'",//第三处 汇编工具目录
                 "-c",
@@ -67,7 +68,16 @@
                 "tlink/v/3 test",
                 "-c",
                 "test",
+                "-exit"
             ],
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            },
             "problemMatcher": [],
             "group": {
                 "kind": "build",

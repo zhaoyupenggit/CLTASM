@@ -6,8 +6,8 @@
 /ASM/MASM/TEST.*
 
 # dosbox工作日志文件
-/ASM/DOSBOX/stderr.txt
-/ASM/DOSBOX/stdout.txt
+stderr.txt
+stdout.txt
 tasm/微机实验/实验四 计时8255/4xk.asm
 ASM/TASM/TDCONFIG.TD
 
