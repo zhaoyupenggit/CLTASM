@@ -15,7 +15,15 @@
                     "value": "${workspaceRoot}\\ASM\\TASM\\test.*",//第一处 汇编工具目录 删除汇编工具目录的原来汇编留下的测试程序
                     "quoting": "strong"
                 }
-            ]
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
         },
         {
             "label":"copytotest",//将需要汇编的源代码复制到汇编工具所在文件夹
@@ -31,8 +39,16 @@
                     "quoting": "strong"
                   }
                 ],
+                "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            },
             "problemMatcher": [],
-            "dependsOn": ["deltest"]
+            
         },
         {
             "label": "dosboxtasm",//调用dosbox来编译链接运行程序
@@ -57,7 +73,8 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "dependsOn": ["copytotest"]
+            "dependsOrder": "sequence",
+            "dependsOn": ["deltest","copytotest"]
         },
         {
             "label": "tdt",//调用dosbox来编译链接运行程序
@@ -78,7 +95,8 @@
                 "td test",
             ],
             "problemMatcher": [],
-            "dependsOn": ["copytotest"]
+            "dependsOrder": "sequence",
+            "dependsOn": ["deltest","copytotest"]
         }
     ]
 }

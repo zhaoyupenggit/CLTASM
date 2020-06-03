@@ -20,8 +20,8 @@ LKEY  	= 10;密码支持的最大长度
 LPT   	= 10;打印的起始行数
 LTIME   = 3;设置用户可以尝试的最大次数，注意修改第47行左右的字符串
 
-NAM  	DB '1804','$';姓名列表
-KEY   	DB '0215',0DH;密码列表
+NAM  	DB '1','$';姓名列表
+KEY   	DB '1',0DH;密码列表
 NAME1 	DB 'LENA','$'
 PASS1 	DB 'JOBS',0DH
 NAME2 	DB 'lau','$'

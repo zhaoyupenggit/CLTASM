@@ -1,13 +1,17 @@
+;增加了计数功能的版本
 .486
 DATA 	SEGMENT USE16
 			DB 16 DUP(?)
-	MESG0   DB 4 DUP(?)
-			DB '>>'
-	MESG 	DB 'B18040215',0DH,0AH,'$'
-	MS1		DB '<-->PRINT PER HALF OF ONE SEC',0DH,0AH
+	MESG0   DB 'No.'
+	MESG1		DB 4 DUP(?)
+			DB '> '
+	MESG 	DB 'printing please press to stop',0DH,0AH,'$'
+	MS1		DB '<-->PRINT PER HALF SEC',0DH,0AH
 			DB '<-->PLEASE PRESS ANY KEY TO STOP',0AH,0DH,'$'
-	MS2     DB '(-v-)PRESSED!',0DH,0AH,'$','$'
-	COUNT   Dw 1
+	MS2     DB '(-v-)PRESSED!have printed'
+	NUM		DB 5 DUP(?)
+			DB 'times',0DH,0AH,'$'
+	COUNT   DW 1
 	ICOUNT1 DB 100;100*5ms=0.5s
 	ICOUNT2 DB 11;11*5ms=55ms
 	OLD08   DD ?;用于保存原来的08H服务程序地址
@@ -28,6 +32,7 @@ SCAN:	MOV AH,1
         INT 16H;检测键盘是否有输入
         JZ SCAN;无输入便循环
 		CLI;有输入则关中断，准备结束程序
+		CALL DECPC
 		MOV AH,9
 		LEA DX,MS2
 		INT 21H
@@ -48,7 +53,6 @@ SERVICE	PROC
 		MOV AH,9
 		LEA DX,MESG0
 		INT 21H
-		INC COUNT
 NEXT:	DEC ICOUNT2;判断是否为55ms间隔的中断
 		JNZ EXIT;不是则结束子程序，还原现场
 		MOV ICOUNT2,11;是则调用原来的中断程序
@@ -102,7 +106,7 @@ RESET08 ENDP
 
 
 HEXPC PROC
-		LEA BX,MESG0
+		LEA BX,MESG1
 		MOV DX,COUNT
 		MOV CX,4
 		SAL EDX,16
@@ -111,12 +115,33 @@ AGA:	ROL EDX,4
 		CMP DL,10
 		JC EXT
 		ADD DL,7
-EXT:   ADD DL,30H
+EXT:    ADD DL,30H
 		MOV [BX],DL;
 		INC BX
 		LOOP AGA
+		INC COUNT
 		RET 
 HEXPC ENDP
-
+DECPC PROC
+		MOV CX,5
+		DEC COUNT
+        MOV AX,COUNT
+	    LEA BX,NUM+4				
+DBEG:   MOV DX,0
+        MOV SI,10
+		DIV SI
+		ADD DX,30H
+		MOV [BX],DL
+		DEC BX
+		MOV DX,0
+		LOOP DBEG
+    	LEA BX,NUM
+DAGA:	CMP BYTE PTR [BX],'0'
+		JNZ DEXIT
+		MOV BYTE PTR [BX],0
+		INC BX
+		JMP DAGA
+DEXIT:  RET
+DECPC ENDP
 CODE ENDS
 END BEG
