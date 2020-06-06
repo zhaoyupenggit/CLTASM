@@ -16,7 +16,7 @@ DISP	MACRO	Y, X, VAR, LENGTH, COLOR;BIOS按照要求显示字符串
 		 MOV         DL,X                    ;X列号 →DL
 		 MOV         BP,OFFSET VAR           ;VAR串有效地址→BP
 		 INT            10H
-ENDM 
+ENDM
 
 DATA SEGMENT USE16
 LNAM  = 10;姓名支持的最大长度
@@ -26,8 +26,8 @@ BUF   DB 10
 	  DB ?
 	  DB 10 DUP(?);用来作为存储用户名的缓冲区
 MESGN DB LNAM DUP('_')
-NAM   DB '1804','$';姓名列表
-KEY   DB '0215',0DH;密码列表
+NAM   DB 'name','$';姓名列表
+KEY   DB 'key',0DH;密码列表
 NAME1 DB 'LENA','$'
 PASS1 DB 'JOBS',0DH
 LCHECK =  $-NAM
@@ -57,8 +57,8 @@ CODE SEGMENT USE16
 BEG:	MOV AX,DATA
 		MOV DS,AX
 		MOV ES,AX
-		MOV AX,3   
-		INT 10H ;设置屏幕显示方式  
+		MOV AX,3
+		INT 10H ;设置屏幕显示方式
 		DISP LPT,(80-L)/2,MESG1, L,4;欢迎界面
 		;输入用户名
 		DISP LPT+1,(80-LL)/2,MESG2, LL,2
@@ -67,17 +67,17 @@ FIRST:	DISP LPT+2,(80-LNAM)/2,MESGN,LNAM,2;引导输入字符
 		MOV DH,LPT+2
 		MOV DL,(80-LNAM)/2
 		MOV AH,02H
-		INT 10H	;设置光标位置			
+		INT 10H	;设置光标位置
 		MOV AH,0AH
 		MOV DX,OFFSET BUF
-		INT 21H;读入用户键入的字符串放在buf中		
+		INT 21H;读入用户键入的字符串放在buf中
 		MOV DI,OFFSET NAM
    STE:	CALL SCOMP
 		JZ  SEC
 		CMP di, OFFSET ENDD
-		JC  STE		
+		JC  STE
 		JMP FIRST
-		
+
 		;输入密码
 SEC:	DISP LPT+3,(80-LLL)/2,MESG3, LLL,2
 SECO:		MOV CX,3
@@ -107,8 +107,8 @@ LAST:	MOV AH,09H
 		INT 21H
 		MOV AH ,4CH
 	    INT 21H
-		
-		
+
+
 ;-------------------------串比较-------------------------
 SCOMP PROC;正确Z为1 错误Z为0
 		MOV CL,BUF+1
@@ -122,13 +122,13 @@ SCOMP PROC;正确Z为1 错误Z为0
 SNO:	CMP BYTE PTR [DI],0DH
 		JZ  SSNO
 		INC DI
-		JMP SNO	
+		JMP SNO
 SYES:  INC DI
 		cmp di,di;z标志置1
 		JMP SLAST
-		
-SSNO:   INC DI 
-		TEST DI,DI;z标志置0 	
+
+SSNO:   INC DI
+		TEST DI,DI;z标志置0
 SLAST:	MOV ENDD,DI
 RET
 SCOMP ENDP
@@ -147,17 +147,17 @@ KBEG:	MOV AH,08H
 KNEX:	CMP BYTE PTR [DI],AL
 		JZ  KSTEP
 		INC DH
-KSTEP:  INC DI    
+KSTEP:  INC DI
 		MOV AH,02H
 		MOV DL,'*'
 		INT 21H
 		JMP KBEG
- 
+
 KAL0D:	CMP BYTE PTR [DI],0DH
 		JZ  KLAST
-		INC DH 
+		INC DH
 KLAST:	CMP DH,0
 		RET
 KEYCHECK	ENDP
 CODE ENDS
-END BEG 
+END BEG

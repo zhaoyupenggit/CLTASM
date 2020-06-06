@@ -1,3 +1,4 @@
+;未成功的双中断程序代码
 .486
 CODE SEGMENT USE16
 ASSUME CS:CODE

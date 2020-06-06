@@ -1,7 +1,7 @@
 ;上交老师的版本
 .486
 DATA 	SEGMENT USE16
-	MESG 	DB 'B18040215',0DH,0AH,'$'
+	MESG 	DB 'Bleqbs15',0DH,0AH,'$'
 	MESG1		DB '<-->PRINT MESG PER HALF SEC',0DH,0AH
 			DB '<-->PLEASE PRESS ANY KEY TO STOP',0AH,0DH,'$'
 	MESG2   DB '(-v-)PRESSED!',0DH,0AH,'$'
@@ -25,16 +25,16 @@ BEG:	MOV AX,DATA
 SCAN:	MOV AH,1	;检测键盘是否有输入
         INT 16H
         JZ SCAN			;无输入便循环
-		
+
 RETURN:	CLI			;有输入则关中断，准备结束程序
 		MOV AH,9
 		LEA DX,MESG2
 		INT 21H
 		CALL RESET08		;将原来的08服务程序地址还原
-		STI		
+		STI
 		MOV AH,4CH
 		INT 21H
-		
+
 ;----
 SERVICE	PROC
 		PUSHA			;保存寄存器值

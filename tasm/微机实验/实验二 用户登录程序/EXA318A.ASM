@@ -13,7 +13,7 @@ DISP	MACRO	Y, X, VAR, LENGTH, COLOR
 		 MOV         BP,OFFSET VAR           ;VAR串有效地址→BP
 		 INT            10H
 		 MOV          CX,SP
-ENDM 
+ENDM
 DATA SEGMENT USE16
 flag  DB ?
 MESG1 DB 'welcome to  login systerm'
@@ -29,9 +29,9 @@ L7    =  $-MESG7
 MESG8 DB ' login failed'
 L8    =  $-MESG8
 
-NAM   DB 'B18040215'
+NAM   DB 'name'
 ln    DB $-nam
-KEY   DB '0215'
+KEY   DB 'key'
 Lk    =  $-key
 LNAM  = 10
 LKEY  = 10
@@ -53,8 +53,8 @@ CODE SEGMENT USE16
 BEG:	MOV AX,DATA
 		MOV DS,AX
 		MOV ES,AX
-		MOV AX,3   
-		INT 10H   
+		MOV AX,3
+		INT 10H
 		DISP LPT,(80-L)/2,MESG1, L,4;欢迎界面
 		;输入用户名
 		DISP LPT+1,(80-LL)/2,MESG2, LL,2
@@ -62,11 +62,11 @@ BEG:	MOV AX,DATA
 		MOV DH,LPT+2
 		MOV DL,36
 		MOV AH,02H
-		INT 10H		
+		INT 10H
 FIRST: 	MOV AH,0AH
 		MOV DX,OFFSET BUF
-		INT 21H	
-		;输入密码		
+		INT 21H
+		;输入密码
 		DISP LPT+3,(80-LLL)/2,MESG3, LLL,2
 SECOND:	MOV DH,LPT+7
 		MOV BH,0
@@ -75,11 +75,11 @@ SECOND:	MOV DH,LPT+7
 		MOV AH,02H
 		INT 10H
 		CALL KEYCHECK
-		CALL NAMECHECK	
-		JZ   YES		
+		CALL NAMECHECK
+		JZ   YES
 		LOOP SECOND
 		DISP 25,40,MESG8,L8,4
-		JMP LAST		
+		JMP LAST
 
 		;登录结果反馈
 NO:	    DISP LPT+8,(80-L8)/2,MESG8,L8,4
@@ -94,19 +94,19 @@ NAMECHECK PROC
 		cmp [bx],byte ptr ln
 		jnz nno
 		inc bx
-		mov cx,ln 
+		mov cx,ln
 nbeg:	cmp [bx],[si]
 		jnz nno
 		inc bx
 		inc si
 		loop nbeg
 		mov flag,1
-nno:	mov flag,0		
+nno:	mov flag,0
 NAMECHECK ENDP
 ;---------检查密码是否正确---------
 KEYCHECK  PROC
 	    MOV CX,LKEY
-		LEA BX,KEY	
+		LEA BX,KEY
 		MOV DH,0
 kBEG:	MOV AH,08H
 		INT 21H
@@ -115,7 +115,7 @@ kBEG:	MOV AH,08H
 		CMP [BX],AL
 		JZ  STEP
 		inc DH
-   STEP:INC BX    
+   STEP:INC BX
 		MOV AH,02H
 		MOV DL,'*'
 		INT 21H
@@ -123,7 +123,7 @@ kBEG:	MOV AH,08H
 kNEX:   CMP DH,0
 		jnz kend
 		mov flag,1
-kend :		
+kend :
 		RET
 KEYCHECK	ENDP
 CODE ENDS

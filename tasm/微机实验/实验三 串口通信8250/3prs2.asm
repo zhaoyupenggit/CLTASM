@@ -3,15 +3,15 @@
 DATA	SEGMENT  USE16
         OLD0C   DD ?;用来存储中断向量
         FLAG    DB 0;标志位
-	    BUF	    DB 'B18040215'
+	    BUF	    DB 'string'
         LENS   =$-BUF
 DATA    ENDS
 
 CODE	SEGMENT USE16
 		ASSUME    CS:CODE , DS:DATA
-        
+
 BEG:	MOV  AX , DATA
-		MOV	 DS , AX	
+		MOV	 DS , AX
         CLI             ;关中断
         CALL I8259      ;中断控制器初始化
         CALL RD0C       ;读主串口中断对应的中断向量
@@ -19,7 +19,7 @@ BEG:	MOV  AX , DATA
 		CALL I8250      ;串口芯片初始化
         STI             ;开中断
 		LEA	 BX, BUF    ;读取内存中需要发送的信息及其长度
-        MOV	 CX, LENS   
+        MOV	 CX, LENS
         ;循环体
 		;利用查询方式发送字符
 FIRST:  MOV     FLAG,0      ;不使用flag作为标志的话这一步不需要
@@ -29,7 +29,7 @@ SCAN:	MOV	    DX, 3FDH    ;通信线状态寄存器
 		JZ      SCAN        ;如果允许通信就继续下一步
 		MOV     DX, 3F8H
 		MOV     AL, [BX]
-		OUT     DX, AL      ;逐字节发送需要发送的数据	
+		OUT     DX, AL      ;逐字节发送需要发送的数据
         JMP     WAY2       ;选择不同的方法实现“等待数据发完”
 ;方法一：反复查询是否接收完数据
 WAY0:   CMP     FLAG,1
@@ -106,8 +106,8 @@ I8259  ENDP
 RD0C    PROC
     MOV AX,350CH;dos调用的35H功能将1CH的中断向量读出来
     INT 21H
-    MOV WORD PTR OLD0C,BX 
-    MOV WORD PTR OLD0C+2,ES    
+    MOV WORD PTR OLD0C,BX
+    MOV WORD PTR OLD0C+2,ES
 RET
 RD0C    ENDP
 WR0C    PROC

@@ -1,7 +1,7 @@
 ;将打印字符改成BIOS的功能调用
 .586
 DATA	SEGMENT USE16
-TEXT	DB    'B18040215'
+TEXT	DB    'string'
         DB      0DH,0AH
 LLL	EQU     $-TEXT
 DATA 	ENDS
@@ -21,14 +21,14 @@ SCAN:	MOV     DX,3FDH         ;检查通信线状态寄存器
 SEND: 	MOV     DX,3F8H         ;发送保持寄存器
         OUT     DX,AL 		;发送到主串口
 RSCAN:	MOV     DX,3FDH         ;通信线状态寄存器
-        IN      AL,DX           
+        IN      AL,DX
         TEST    AL,01H 		;D0 接收数据准备好标志位 为1表示已接收到一帧完整数据
         JZ      RSCAN;收完转
 RECEIVE:MOV     DX,3F8H         ;接收缓冲寄存器
         IN      AL,DX		;读数据
         AND     AL,7FH
 DISP:	MOV     AH, 0eh         ;屏幕显示
-        INT     10H   		
+        INT     10H
         INC     BX
         LOOP    SCAN
         ;循环体

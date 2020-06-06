@@ -1,4 +1,4 @@
-;增加了计数功能的版本
+;增加了对每次显示功能进行计数功能的版本
 .486
 DATA 	SEGMENT USE16
 			DB 16 DUP(?)
@@ -38,10 +38,10 @@ SCAN:	MOV AH,1
 		INT 21H
 		CALL RESET08;将原来的08服务程序地址还原
 		STI
-		
+
 		MOV AH,4CH
 		INT 21H
-		
+
 ;----
 SERVICE	PROC
 		PUSHA;保存寄存器值
@@ -120,13 +120,13 @@ EXT:    ADD DL,30H
 		INC BX
 		LOOP AGA
 		INC COUNT
-		RET 
+		RET
 HEXPC ENDP
 DECPC PROC
 		MOV CX,5
 		DEC COUNT
         MOV AX,COUNT
-	    LEA BX,NUM+4				
+	    LEA BX,NUM+4
 DBEG:   MOV DX,0
         MOV SI,10
 		DIV SI

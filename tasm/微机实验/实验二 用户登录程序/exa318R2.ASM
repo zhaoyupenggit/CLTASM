@@ -21,16 +21,16 @@ endm
 DATA SEGMENT USE16
 LNAM	= 10;最大用户名长度
 LKEY   	= 10;最大密码长度
-NAM    	DB 'B18040213'
+NAM    	DB 'Bleqbs13'
 L     	=$-NAM
-KEY   	DB '18040213'
+KEY   	DB 'leqbs13'
 LL    	=$-KEY
 NAMI  	DB LNAM
 		DB ?
 	    DB LNAM DUP(?);用于键入用户名信息
 KEYI    DB ?
 		DB LKEY DUP(?);用于键入密码信息
-FLAG    DB 'y'	  
+FLAG    DB 'y'
 MESGNAM DB '>-++->INPUT YOUR NAME: '
 DB '$'
 MESGKEY DB 0AH,0DH,'>-++->INPUT YOUR KEY : '
@@ -51,11 +51,11 @@ BEG:	MOV AX,DATA
 START:	MOV FLAG,'y';输入用户名
 INNAM:	MOV AH,9H
 		MOV DX,OFFSET MESGNAM
-		INT 21H	
+		INT 21H
 		MOV AH,0AH
 		LEA DX,NAMI
-		INT 21H	
-INKEY:	;输入密码		
+		INT 21H
+INKEY:	;输入密码
 		MOV AH,9H
 		MOV DX,OFFSET MESGKEY
 		INT 21H	;提示用户输入密码
@@ -66,7 +66,7 @@ INKEY:	;输入密码
 		CMP AL,0DH
 		JZ  step
 		INC BX
-		MOV [BX],AL;保存该字符  
+		MOV [BX],AL;保存该字符
 		MOV AH,02H
 		MOV DL,'*'
 		INT 21H;输出掩码
@@ -80,14 +80,13 @@ CHECK:  SCOMP NAM,L,NAMI+2,NAMI+1
 		JNZ YES
 NO:	    MOV AH,9H
 		LEA DX,MESGERR
-		INT 21H	
+		INT 21H
 		JMP START
 YES:	MOV AH,9H
 		LEA DX,MESGWEL
-		INT 21H	
+		INT 21H
 		MOV AH,4CH
 		INT 21H
 CODE ENDS
-END BEG		
+END BEG
 
-		
