@@ -1,0 +1,39 @@
+.586
+CODE SEGMENT USE16
+ASSUME CS:CODE
+mesg DB 'CF=0,OF=0'
+BEG:MOV BL,-110
+    MOV DH,BL
+    CALL DISPBIN
+    MOV DH,-70
+    MOV DL,'+'
+    MOV AH,2
+    INT 21H
+    CALL DISPBIN
+    MOV DL,'='
+    MOV AH,2
+    INT 21H
+    ADD DH,BL
+    INC MESG+3
+    CALL DISPBIN
+    MOV AH,4CH
+    INT 21H
+
+DISPBIN PROC
+    MOV CX,8
+    MOV BH,DH
+START:  MOV DL,0
+        ROL DX,1
+        ADD DL,30H
+        MOV AH,2
+        INT 21H
+        MOV DL,0
+        LOOP START
+        MOV DL,'B'
+        MOV AH,2
+        INT 21H
+        MOV DH,BH
+    RET
+DISPBIN ENDP
+CODE ENDS
+END BEG

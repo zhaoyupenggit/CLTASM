@@ -1,0 +1,6 @@
+{
+    "code-runner.executorMap": {
+        "asm":"del t.* && copy $dir$fileName t.asm && $workspaceRoot\\ASM\\Dosbox\\DOSBox.exe -noautoexec -c \"mount c %cd%\" -c \"c:\" -c \"tasm/t/zi t.asm\" -c \"tlink/v/3 t.obj\" -c \"t.exe\"",
+    },
+    "code-runner.cwd": " cd $workspaceRoot\\ASM\\TASM",
+}
