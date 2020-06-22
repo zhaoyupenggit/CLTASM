@@ -3,77 +3,19 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-        //以下四个人物是汇编语言的任务，建议使用编辑器的替换功能替换吊这些字符串，也可手动
-        //${workspaceRoot}\\ASM\\TASM                   为 汇编工具的安装目录
-        //${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe"   为 dosbox程序的地址
-        {
-            "label":"deltest",//清除原来的测试文件
-            "command":"del",
-            "type":"shell",
-            "args":[
-                {
-                    "value": "${workspaceRoot}\\ASM\\TASM\\test.*",//第一处 汇编工具目录 删除汇编工具目录的原来汇编留下的测试程序
-                    "quoting": "strong"
-                }
-            ],
-            "presentation": {
-                "echo": true,
-                "reveal": "never",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": false,
-                "clear": false
-            }
-        },
-        {
-            "label":"copytotest",//将需要汇编的源代码复制到汇编工具所在文件夹
-            "type":"shell",
-            "command":"copy",
-            "args": [
-                {
-                  "value": "${file}",
-                  "quoting": "strong"
-                },
-                {
-                    "value": "${workspaceRoot}\\ASM\\TASM\\test.asm",//第二处 汇编工具目录 将需要汇编的源代码（vscode当前文件）复制到汇编工具所在目录
-                    "quoting": "strong"
-                  }
-                ],
-                "presentation": {
-                "echo": true,
-                "reveal": "never",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": false,
-                "clear": false
-            },
-            "problemMatcher": [],
-            
-        },
         {
             "label": "DosboxTasmCurrentFile",//调用dosbox来编译链接运行程序
             "type": "shell",
             "command":
-            "${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe",//第一处 dosbox程序所在地址 这里填dosbox.exe的位置，${workspaceRoot}表示当前工作目录
+            "${workspaceRoot}\\ASM\\TASMit.bat",//第一处 dosbox程序所在地址 这里填dosbox.exe的位置，${workspaceRoot}表示当前工作目录
             "args": [
-                "-noautoexe",
-                "-noconsole",
-                "-c",
-                "mount c '${workspaceRoot}\\ASM\\TASM'",//第三处 汇编工具目录
-                "-c",
-                "c:",
-                "-c",
-                "tasm/t/zi test",
-                "-c",
-                "tlink/v/3 test",
-                "-c",
-                "test",
-                "-exit"
+                "${input:dosboxtasm}",
+                "${workspaceRoot}",//第三处 汇编工具目录
+                "${file}",
             ],
             "presentation": {
                 "echo": true,
-                "reveal": "never",
-                "focus": false,
+                "focus": true,
                 "panel": "shared",
                 "showReuseMessage": false,
                 "clear": false
@@ -83,30 +25,51 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "dependsOrder": "sequence",
-            "dependsOn": ["deltest","copytotest"]
         },
+    ],
+    "inputs": [
         {
-            "label": "tdt",//调用dosbox来编译链接运行程序
-            "type": "shell",
-            "command":
-            "${workspaceRoot}\\ASM\\Dosbox\\DOSBOX.exe",//第二处 dosbox.exe的位置 ${workspaceRoot}表示当前工作目录
-            "args": [
-                "-noautoexe",
-                "-c",
-                "mount c '${workspaceRoot}\\ASM\\TASM'",//第四处 汇编工具目录
-                "-c",
-                "c:",
-                "-c",
-                "tasm/t/zi test",
-                "-c",
-                "tlink/v/3 test",
-                "-c",
-                "td test",
-            ],
-            "problemMatcher": [],
-            "dependsOrder": "sequence",
-            "dependsOn": ["deltest","copytotest"]
-        }
-    ]
+          "type": "pickString",
+          "id": "dosboxtasm",
+          "description": "选择如何调用dosbox和tasm",
+          "options": [
+            {
+
+                "label": "在output中输出，一些程序结果无法完全显示",
+                "value": "0",
+            },
+            {
+
+                "label": "在dosbox中运行，需要手动退出（输入exit，点x或Ctrl+F9）",
+                "value": "1",
+            },
+            {
+
+                "label": "在dosbox中运行，需要手动退出（任意键退出）",
+                "value": "2",
+            },
+            {
+
+                "label": "在dosbox中调试，汇编链接程序并调试",
+                "value": "3",
+            },
+            {
+
+                "label": "在dosbox中调试，直接调试",
+                "value": "4",
+            },
+            {
+
+                "label": "dosbox tasm 将文件复制到TASM文件夹中，dosbox打开该文件夹",
+                "value": "5",
+            },
+            {
+                "label": "dosbox here 在当前文件所在文件夹打开dosbox",
+                "value": "6",
+            },
+          ],
+          "default": "0"
+        },
+    ],
+
 }
