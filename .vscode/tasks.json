@@ -60,11 +60,11 @@
             },
             {
 
-                "label": "dosbox tasm 将文件复制到TASM文件夹中，dosbox打开该文件夹",
+                "label": "dosbox tasm 将文件复制到TASM文件夹中，dosbox打开该TASM文件夹",
                 "value": "5",
             },
             {
-                "label": "dosbox here 在当前文件所在文件夹打开dosbox",
+                "label": "dosbox here with TASM path 在当前文件所在文件夹打开dosbox",
                 "value": "6",
             },
           ],

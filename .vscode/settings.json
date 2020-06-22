@@ -1,7 +1,7 @@
 {
+    "code-runner.runInTerminal":false,
     "code-runner.executorMapByGlob": {
     //指定后缀名为ASM和asm的文件的执行方式
-    "code-runner.cwd": "$workspaceRoot\\ASM\\TASM",
     "*.{ASM,asm}":"$workspaceRoot\\ASM\\TASMit.bat 0 $workspaceRoot $fullFileName"
 },
 }
