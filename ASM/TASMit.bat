@@ -26,7 +26,7 @@ if %1==6 goto deal6 %3 REM 使用dosbox打开当前文件所在文件夹
     -c "mount c \"%aa%\"" -c "c:"^
     -c "tasm/t/zi T.ASM>T.txt" ^
     -c "if exist T.OBJ tlink/v/3 T>>T.txt"^
-    -c "echo ----->>T.txt"^
+    -c "if exist T.OBJ echo program output ----->>T.txt"^
     -c "if exist T.EXE T>>T.txt"^
     -c "EXIT"
     echo.>>T.txt

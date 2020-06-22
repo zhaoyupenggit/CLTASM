@@ -4,14 +4,13 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "DosboxTasmCurrentFile",//调用dosbox来编译链接运行程序
+            "label": "DosboxTasmCurrentFile",
             "type": "shell",
-            "command":
-            "${workspaceRoot}\\ASM\\TASMit.bat",//第一处 dosbox程序所在地址 这里填dosbox.exe的位置，${workspaceRoot}表示当前工作目录
+            "command": "${workspaceRoot}\\ASM\\TASMit.bat",
             "args": [
                 "${input:dosboxtasm}",
-                "${workspaceRoot}",//第三处 汇编工具目录
-                "${file}",
+                "${workspaceRoot}",
+                "${file}"
             ],
             "presentation": {
                 "echo": true,
@@ -24,8 +23,8 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-        },
+            }
+        }
     ],
     "inputs": [
         {
