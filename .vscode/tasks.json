@@ -6,7 +6,7 @@
         {
             "label": "DosboxTasmCurrentFile",
             "type": "shell",
-            "command": "${workspaceRoot}\\ASM\\TASMit.bat",
+            "command": "${workspaceRoot}\\ASMtools\\TASMit.bat",
             "args": [
                 "${input:dosboxtasm}",
                 "${workspaceRoot}",

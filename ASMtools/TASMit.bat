@@ -1,7 +1,7 @@
 @echo off
 REM %1为选择执行命令的方式 %2为工作区根目录 %3为需要操作的文件
-set  bb=\ASM\TASM
-set  cc=\ASM\Dosbox\
+set  bb=\ASMtools\TASM
+set  cc=\ASMtools\Dosbox\
 set "aa=%2%bb%"
 set "dd=%2%cc%"
 
