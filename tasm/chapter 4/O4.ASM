@@ -1,26 +1,30 @@
-  .586
-DATA  SEGMENT  USE16
-NUM    DW   1000,23232,2300,4895,2999,1299,8769,4545,9990
-DATA  ENDS
+.486
+DATA     SEGMENT  USE16
+MESG1   DB 'HELLO $'
+MESG2   DB 'I AM A STUDENT';
+LL       =$-MESG2;
+DATA     ENDS
 CODE  SEGMENT  USE16
-      ASSUME   CS:CODE,DS:DATA
-BEG:    MOV   AX,DATA
-              MOV   DS,AX
-              MOV   BX,OFFSET NUM
-              MOV   CX,9
-              MOV   DL,0                               ;DL存放统计人数
-LAST:  CMP   WORD PTR [BX],2000        
-              JC    NEXT                                    ;<2000时转NEXT指令
-              CMP  WORD PTR[BX],4000         
- 　           JA  　NEXT        ;>4000转NEXT指令              
-            　INC   DL            ;DL+1→DL 
-NEXT:　INC   BX          ;由于NUM是字单元,BX←BX＋2
-            　INC   BX                           
-           　 LOOP  LAST
-          　  ADD   DL,30H       ;DL=0~9ASCⅡ码 
-           　 MOV   AH,2			;显示统计结果
-          　  INT   21H                          
-           　 MOV   AH,4CH
-            　INT   21H
-CODE  ENDS
-         END    BEG 
+        ASSUME  CS:CODE
+        ASSUME  DS:DATA
+        ASSUME  ES:DATA
+BEG:    MOV   AX, DATA
+        MOV   DS, AX
+        MOV   ES,  AX
+        MOV   AX, 0003H
+        INT   10H
+        MOV   AH, 9
+        MOV   DX,OFFSET  MESG1
+        INT   21H
+        MOV   AX, 1301H
+        MOV   BH,  0
+        MOV   BL, 01001111B
+        MOV   CX,  LL
+        MOV   DH,12
+        MOV   DL, (80-LL)/2
+        MOV   BP, OFFSET  MESG2
+        INT   10H
+        MOV   AH,  4CH
+        INT      21H
+      CODE       ENDS
+END    BEG

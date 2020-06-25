@@ -1,4 +1,4 @@
-;简单程序实现加法运算，没有输出
+;简单程序实现加法运算，没有输入输出
 .586
 DATA SEGMENT USE16
 	SUM DB ?
@@ -10,9 +10,9 @@ CODE SEGMENT USE16
 START:
 	MOV  AX,DATA
 	MOV  DS,AX
-        MOV AL, 4H
-	ADD AL,52H
-	MOV SUM,AL
+    MOV  AL, 4H
+	ADD  AL,52H
+	MOV  SUM,AL
 	MOV  AH,4CH
 	INT  21H
 CODE  ENDS

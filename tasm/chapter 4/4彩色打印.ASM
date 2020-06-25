@@ -1,4 +1,5 @@
-;example of the use of BIOS INT 10H 
+;彩色打印
+;example of the use of BIOS INT 10H
 ;from ppt chapter 4
 .486
 DATA SEGMENT USE16
@@ -10,7 +11,7 @@ DATA ENDS
 CODE SEGMENT USE16
         ASSUME CS:CODE
         ASSUME DS:DATA
-        ASSUME ES:DATA
+        ASSUME ES:DATA;将数据段与附加段定义在一起
  BEG:   MOV AX,DATA
         MOV DS,AX
         MOV ES,AX
@@ -19,10 +20,10 @@ CODE SEGMENT USE16
         INT 10H ;SET 80x25 colour screen
         MOV AH,9
         MOV DX,OFFSET MESG1
-        INT 21H
-        MOV AX,1301H
-        MOV BH,0
-        MOV BL,01001111B
+        INT 21H;DOS09H显示字符串，响应ctrl_C
+        MOV AX,1301H;AL=0~3,0/1可以实现彩色打印字符
+        MOV BH,0;设置打印位置所在页
+        MOV BL,01001111B;颜色，背景等代表的属性字
         MOV DH,12
 		mov cx,LL
         MOV DL,(80-LL)/2

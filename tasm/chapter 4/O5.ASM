@@ -1,18 +1,16 @@
-.586
-DATA      SEGMENT USE16
-SUM       DW  ?
-DATA      ENDS
-CODE      SEGMENT USE16
-ASSUME CS:CODE,   DS:DATA
-BEG:    MOV   AX, DATA   
-		MOV   DS, AX
-		
-		MOV CX,100
-		MOV  AX, 0
-AGAIN:  ADD AX, CX
-		LOOP  AGAIN
-		MOV  SUM, AX
-		MOV AH 4CH
-		INT 21H
-CODE      ENDS
- END  BEG				 
+.486
+CODE   SEGMENT   USE16
+       ASSUME     CS:CODE
+BEG:    MOV    BX,5678H
+        MOV    CX,16
+LAST:   MOV    AL,'0'
+	ROL    BX,1
+	JNC    NEXT
+	MOV    AL,'1'
+NEXT:   MOV    AH,0EH
+        INT    10H
+        LOOP   LAST
+        MOV    AH,4CH
+        INT    21H
+        CODE   ENDS
+END    BEG

@@ -1,28 +1,29 @@
-.486 
-DATA   SEGMENT USE16
-BUF    DB     'QWERTYUIOP123'
-COUNT  EQU  $-BUF;统计串长度
-MAX    DB  'MAX=',?,0DH,0AH,'$'
-DATA   ENDS
-
-CODE   SEGMENT USE16
-	   ASSUME  CS:CODE,DS:DATA
-BEG:   MOV   AX,DATA
-	   MOV   DS,AX
-	   MOV   AL,0		;无符号最小数 0 →AL
-	   LEA    BX,BUF	;串首址偏移量→BX  
-	   MOV  CX,COUNT	;串长度→CX  
-LAST:  CMP     [BX],AL	;比较
-		JC    NEXT
-		MOV    AL,[BX]	;大数→AL
-NEXT:   INC       BX
-        LOOP   LAST    ;循环计数
-        MOV     MAX+4,AL	;最大数→MAX+4 单元
-		MOV     AH,9
-		MOV     DX,OFFSET MAX
-		INT        21H      ;显示结果
-		
-		MOV     AH,4CH
-		INT        21H      ;返回 DOS
-CODE  ENDS
-              END     BEG  
+;there are 9 people in a department
+;calculate the number of people whose incomes are between 2000 and 4000
+;display them in the form of decimal numbers
+.586
+DATA  SEGMENT  USE16
+NUM    DW   1000,23232,2300,4895,2999,1299,8769,4545,9990
+DATA  ENDS
+CODE  SEGMENT  USE16
+      ASSUME   CS:CODE,DS:DATA
+BEG:  MOV   AX,DATA
+      MOV   DS,AX
+      MOV   BX,OFFSET NUM
+      MOV   CX,9
+      MOV   DL,0
+LAST: CMP   WORD PTR [BX],2000
+      JC    NEXT
+      CMP  WORD PTR[BX],4000
+      JA  　NEXT
+　    INC   DL
+NEXT: INC   BX
+　    INC   BX
+      LOOP  LAST
+      ADD   DL,30H
+      MOV   AH,2
+      INT   21H
+      MOV   AH,4CH
+      INT   21H
+  CODE  ENDS
+END    BEG
