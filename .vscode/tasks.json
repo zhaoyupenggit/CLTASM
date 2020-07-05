@@ -6,9 +6,9 @@
         {
             "label": "DosboxTasmCurrentFile",
             "type": "shell",
-            "command": "${workspaceRoot}\\ASMtools\\TASMit.bat",
+            "command": "${workspaceRoot}\\ASMtools\\ASMit.bat",
             "args": [
-                "${input:dosboxtasm}",
+                "${input:dosboxasm}",
                 "${workspaceRoot}",
                 "${file}"
             ],
@@ -24,51 +24,64 @@
                 "kind": "build",
                 "isDefault": true
             }
-        }
+        },
     ],
     "inputs": [
         {
           "type": "pickString",
-          "id": "dosboxtasm",
-          "description": "选择如何调用dosbox和tasm",
+          "id": "dosboxasm",
+          "description": "选择如何调用dosbox和tasm/masm",
           "options": [
             {
-
-                "label": "在output中输出，一些程序结果无法完全显示",
+                "label": "dosbox 将文件复制到测试文件夹中\t",
                 "value": "0",
             },
             {
-
-                "label": "在dosbox中运行，需要手动退出（输入exit，点x或Ctrl+F9）",
+                "label": "TASM在output中输出，一些程序结果无法完全显示\t",
                 "value": "1",
             },
             {
-
-                "label": "在dosbox中运行，需要手动退出（任意键退出）",
+                "label": "TASM在dosbox中运行，需要手动退出（输入exit，点x或Ctrl+F9）\t",
                 "value": "2",
             },
             {
-
-                "label": "在dosbox中调试，汇编链接程序并调试",
+                "label": "TASM在dosbox中运行，需要手动退出（任意键退出）\t",
                 "value": "3",
             },
             {
-
-                "label": "在dosbox中调试，直接调试",
+                "label": "TASM在dosbox中调试，汇编链接程序再调试\t",
                 "value": "4",
             },
             {
-
-                "label": "dosbox tasm 将文件复制到TASM文件夹中，dosbox打开该TASM文件夹",
+                "label": "MASM在output中输出，一些程序结果无法完全显示\t",
                 "value": "5",
             },
             {
-                "label": "dosbox here with TASM path 在当前文件所在文件夹打开dosbox",
+
+                "label": "MASM在dosbox中运行，需要手动退出（输入exit，点x或Ctrl+F9）\t",
                 "value": "6",
             },
+            {
+
+                "label": "MASM在dosbox中运行，需要手动退出（任意键退出）\t",
+                "value": "7",
+            },
+            {
+                "label": "MASM在dosbox中调试，汇编链接程序再调试\t",
+                "value": "8",
+            },
+            {
+                "label": "TD在dosbox中调试，直接启动调试程序\t",
+                "value": "A",
+            },
+            {
+                "label": "DEBUG在dosbox中调试，直接启动调试程序\t",
+                "value": "B",
+            }, 
           ],
           "default": "0"
         },
+        
     ],
 
 }

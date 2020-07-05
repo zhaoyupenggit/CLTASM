@@ -2,8 +2,8 @@
 .486
 DATA 	SEGMENT USE16
 	NUM  DB 5 DUP(?)
-        DB '$'
-    COUNT DW 14
+         DB '$'
+    COUNT DW 0FFFH
 DATA ENDS
 CODE	SEGMENT USE16
  ASSUME CS:CODE,DS:DATA
@@ -15,6 +15,7 @@ BEG:    MOV AX,DATA
         INT 21H
         MOV AH,4CH
         INT 21H
+;子程序：将COUNT中的数据转化为十进制数后转为ASCII码存在NUM中
 DECPC PROC
 		MOV CX,5
         MOV AX,COUNT
