@@ -69,7 +69,7 @@ exit 2
     exit
 :deal4
     echo *Tasm and turbo debugger in dosbox
-    cd ../tasm && copy TDCONFIG1 TDCONFIG.TD
+    copy ..\tasm\TDC2.td TDCONFIG.TD
     :: 使得td.exe 使用这个配置文件
     %dd%DOSBox -conf %dd%bigbox.conf %mcd%^
     -c "tasm/zi T.ASM" -c "tlink/v/3 T.OBJ"^
@@ -109,7 +109,7 @@ exit 2
     if  exist TD.TR echo tr exist
     if not exist T.EXE  echo no EXE file && exit 3
     echo *Turbo debugger without tasm first in dosbox
-    cd ../tasm && copy TDCONFIG1 TDCONFIG.TD
+    copy ..\tasm\TDC2.td TDCONFIG.TD
     %dd%DOSBox -conf %dd%bigbox.conf %mcd%-c "td t"
     exit
 :dealB
