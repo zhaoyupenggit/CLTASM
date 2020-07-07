@@ -6,15 +6,14 @@ dd=./Dosbox/
 mode='1'
 # check whether installed dosbox
 if type dosbox
-    then
-        echo dosbox installed
+    then 
+        echo *dosbox installed
     else
-        echo You need install dosbox first
-        echo Maybe U can use:sudo apt install dosbox
+        echo *You need install dosbox first
+        echo **Maybe You can use:sudo apt install dosbox
         exit
     fi
 # check the file path installed
-echo --$1--
 if [ -z "$1" ]
 then
     echo "./asmit.sh <file> [-d <asmtools> -m <mode>]"
@@ -42,16 +41,10 @@ then
 elif [ -r "$1" ]
 then
     file=$1
-    if [ ${file##*.} != ASM ] && [ ${file##*.} != asm ];then
-    echo "the ${file##*.} file may not a assembly source code file"
-    echo 
-        if ! read -t 10 -p "press Y to use it as an asmfile: " selection || [ ${selection} != Y ]
-        then
-        echo "No \"Y\" catched back to shell"
-        exit
-        fi
-    fi
-    echo "run the script"
+    # get the options
+    echo ========
+    cd  "$(dirname $0)"
+    cd "$tool"
     shift
     while getopts :m:d: opt
     do
@@ -61,15 +54,29 @@ then
             *) echo "unknown option: $opt";;
         esac
     done
-    cd $tool
-    echo Mode:$mode Time:$(date)
-    echo ASMtoolsfrom:$(pwd)
-    echo ASMfilefrom:$file
-    if [ $mode!=A ] && [ $mode!=B ]
+    # output infomation
+    echo *ASMtoolsfrom:$(pwd)
+    echo *ASMfilefrom:$file
+    echo *Mode:$mode Time:$(date)
+    # check the file
+    if [ $mode != A ] && [ $mode != B ] 
     then
-    ls test/ || mkdir test && rm test/*.*
-    cp "$file" test/T.ASM
+        if [ ${file##*.} != ASM ] && [ ${file##*.} != asm ];then
+        echo "the ${file##*.} file may not a assembly source code file"
+        echo ---
+            if ! read -t 10 -p "press Y to use it as an asmfile: " selection || [ ${selection} != Y ]
+            then
+            echo "No \"Y\" catched back to shell"
+            exit
+            fi
+        fi
+        ls test/ || mkdir test && rm test/*.*
+        cp "$file" test/T.ASM
+        # echo deleted temp files 
     fi
+    echo ==============
+    pwd
+    # do the operation
     case "$mode" in
     0)
         echo *Copy file to Test folder and dosbox at the folder
@@ -79,17 +86,20 @@ then
         exit;;
     1)
         echo *Output in terminal
-        echo [dosbox] OUTPUT:
+        echo *[dosbox] status:
         dosbox -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\TASM;C:\masm" -c "c:" -c "cd test"\
         -c "tasm/zi T.ASM>>T.TXT"\
         -c "if exist T.OBJ tlink/v/3 T>>T.TXT"\
         -c "if exist T.EXE T>T.OUT"\
         -c "exit"
-        cat test/T.TXT
+        echo 
+        echo "*[dosbox] output:"
+        cat test/T.TXT|tr -d '\r'|tr -s '\n'
         if [ -r test/T.OUT ];then
-        echo [YOUR program] OUTPUT:
+        echo "*[YOUR program] OUTPUT:"
         cat test/T.OUT
+        echo 
         fi
         exit;;
     2)
@@ -115,16 +125,21 @@ then
         exit;;
     5)
         echo *Output in terminal
-        echo [dosbox] OUTPUT:
+        echo *[dosbox] status:
         dosbox -conf ${dd}bigbox.conf -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\MASM" -c "c:" -c "cd test"\
         -c "masm T.ASM;>T.txt"\
         -c "if exist T.OBJ link T.obj;>>T.txt"\
         -c "if exist T.EXE T>T.out"\
         -c "exit"
-        cat test/T.TXT
-        echo [YOUR program] OUTPUT:
-        cat test/T.OUT
+        echo 
+        echo *[dosbox] output:
+        cat test/T.TXT|tr -d '\r'|tr -s '\n'
+        if [ -r test/T.OUT ];then
+            echo *[YOUR program] OUTPUT:
+            cat test/T.OUT
+        echo 
+        fi
         exit;;
     6)
         echo *Output in dosbox,input "exit" or ctrl-F9 or click 'x' to exit dosbox
@@ -149,15 +164,25 @@ then
     A)
         echo *Turbo debugger without tasm first in dosbox
         cp ./TASM/TDC2.TD test/TDCONFIG.TD
+        if [ -r test/T.EXE ]
+        then 
         dosbox -conf ${dd}bigbox.conf \
         -c "mount c \"$tool\"" -c "set path=%path%;C:\TASM" -c "c:" -c "cd test"\
         -c "td t"
+        else
+        echo "no T.EXE for TD"
+        fi
         exit;;
     B)
         echo *Masm debugg without tasm first in dosbox
+        if [ -r test/T.EXE ]
+        then
         dosbox -conf ${dd}bigbox.conf \
         -c "mount c \"$tool\"" -c "set path=%path%;C:\MASM" -c "c:" -c "cd test"\
         -c "debug t.exe"
+        else
+        echo "no T.TXT for debug"
+        fi
         exit;;
     *) echo "invalid mode";;
     esac
