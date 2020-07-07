@@ -39,6 +39,10 @@ Just clone this repository to your folder and then you can use these features. A
 
 For linux, we should **Install the `dosbox` first**.Use command like `sudo apt install dosbox` or download from website[DOSBox](https://www.dosbox.com). Since I have put the dosbox.exe in the folder `ASMtools\dosbox`,so it's not necessary to install dosbox for windows users
 
+To use Code Runner ,Please undo comment of line 6 and add comment to line 5
+
+![Code Runner Settings](pics/2020-07-07-18-44-09.png)
+
 #### Partly use
 
 We can also copy the folder .vscode and ASMtools to your workspace to use them for running dosbox

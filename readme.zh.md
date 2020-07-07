@@ -13,13 +13,13 @@
 
 ## :star:使用方法
 
-克隆本仓库，并使用VSCode打开，第二种方法需要先安装vscode的[CodeRunner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)插件。linux系统需要先安装dosbox。
+克隆本仓库，并使用VSCode打开，第二种方法需要先安装vscode的[CodeRunner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)插件。linux系统需要先安装[dosbox](https://www.dosbox.com)。
 
-- **VSCode终端任务**：使用**Ctrl+Shift+B**快捷键[^task]来运行*默认生成任务*实现汇编运行ASM源程序，因为本仓库在`.vscode`文件夹下的tasks.json 中定义了调用dosbox运行相关程序的任务
+- **VSCode终端任务**：使用**Ctrl+Shift+B**快捷键[^task]来运行*默认生成任务*实现汇编运行ASM源程序，因为本仓库在`.vscode`文件夹下的[tasks.json](.vscode/tasks.json)中定义了调用dosbox运行相关程序的任务
 
 ![vscode tasks 效果示例](pics/tasksView.gif)
 
-- **Code Runner自定义任务**：可以使用**Ctrl+Alt+N**快捷键来运行程序，因为本仓库已经在`.vscode/settings.json` 中添加了运行代码的自定义命令。效果如下图
+- **Code Runner自定义任务**：可以使用**Ctrl+Alt+N**快捷键来运行程序，因为本仓库已经在`.vscode/settings.json` 中添加了运行代码的自定义命令。如果使用linux 需要在[settings.json](.vscode/settings.json) 中按照注释要求修改 效果如下图
 
 |编译成功截图|编译有错截图|
 |------------|------|
