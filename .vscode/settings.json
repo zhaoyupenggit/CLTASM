@@ -2,6 +2,6 @@
     "code-runner.runInTerminal":false,
     "code-runner.executorMapByGlob": {
     //指定后缀名为ASM和asm的文件的执行方式,如果要使用MASM请将1改为5
-    "*.{ASM,asm}":"$workspaceRoot\\ASMtools\\ASMit.bat 1 $workspaceRoot $fullFileName"
+    "*.{ASM,asm}":"$workspaceRoot\\ASMtools\\ASMit.bat 1 $workspaceRoot\\ASMtools $fullFileName"
 },
 }

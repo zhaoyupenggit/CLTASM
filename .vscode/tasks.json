@@ -10,7 +10,7 @@
                 "command": "${workspaceRoot}\\ASMtools\\ASMit.bat",
                 "args": [
                     "${input:dosboxasm}",
-                    "${workspaceRoot}",
+                    "${workspaceRoot}\\ASMtools",
                     "${file}"
                     ],
             },

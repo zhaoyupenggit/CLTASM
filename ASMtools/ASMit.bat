@@ -1,12 +1,10 @@
 @echo off
 :: GB 2312
-:: %1为选择执行命令的方式 %2为工作区根目录 %3为需要操作的文件
+:: %1为选择执行命令的方式 %2为汇编工具所在文件夹 %3为需要操作的文件
 ::输出编译信息
 if "%1" == "" echo "no invar. please use ASMit.BAT <Mode> <WorkspaceRootPpath> <filepath>" && exit 4
-set  bb=\ASMtools
-set  cc=\ASMtools\Dosbox\
-set "aa=%2%bb%"
-set "dd=%2%cc%"
+set "aa=%2"
+set "dd=%2%cc%\Dosbox\"
 echo Time:%time% WorkspaceRoot:%2
 echo DOSBox frome %dd% ASMtoolsfrom:%aa%
 echo Mode:%1 ASMfilefrom:%3
