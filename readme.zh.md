@@ -1,6 +1,6 @@
 # 汇编笔记代码及配置VSCode一键运行ASM
 
-[English](readme.en.md)|[gitee仓库](https://gitee.com/chenliucx/CLTASM)|[github仓库](https://github.com/xsrolau-liu/cltasm)
+[English](readme.md)|[gitee仓库](https://gitee.com/chenliucx/CLTASM)|[github仓库](https://github.com/xsro/VSC-Tasm)
 
 学习《微型计算机原理与接口技术》的时候正好刚刚接触了git和VSCode，苦于DOSBox的“专注于游戏”，编辑代码种种不爽。所以尝试通过脚本和**VSCode**的终端任务来简化编译过程，实现**一键编译运行ASM文件**:smiley:
 
@@ -13,7 +13,7 @@
 
 ## :star:使用方法
 
-克隆本仓库，并使用VSCode打开，第二种方法需要先安装vscode的[CodeRunner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)插件
+克隆本仓库，并使用VSCode打开，第二种方法需要先安装vscode的[CodeRunner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)插件。linux系统需要先安装dosbox。
 
 - **VSCode终端任务**：使用**Ctrl+Shift+B**快捷键[^task]来运行*默认生成任务*实现汇编运行ASM源程序，因为本仓库在`.vscode`文件夹下的tasks.json 中定义了调用dosbox运行相关程序的任务
 
@@ -34,9 +34,9 @@
 
 64位系统下使用[DOSBox](ASM/Dosbox/DOSBox.exe)模拟的16位汇编环境，使用[TASM](ASM/TASM)汇编工具集编译的程序，同时也可以细微调整之后使用[MASM](ASM/MASM)，（如：去掉use16）来进行汇编程序或尝试这个vscode插件[masm-code](https://github.com/Woodykaixa/masm-code)
 
-编写了一个Batch脚本文件，用它来实现调用dosbox模拟相关操作，拓展Code runner 和终端任务便是调用这个脚本来实现相关操作，脚本工作的主要流程如下：
+编写了一个Batch/Shell脚本文件，用它来实现调用dosbox模拟相关操作，终端任务便是调用对应脚本来实现相关操作，脚本工作的主要流程如下：
 
-1. 将需要编译的文件复制到TASM工具所在文件夹
+1. 将需要编译的文件复制到`ASMtools\test`
 2. 调用DOSBox，将TASM文件夹挂载到dosbox中，然后使用tasm.exe tlink.exe td.exe等工具进行操作
 
 可以只参考里面的配置文件。可以将[.vscode](.vscode)和[ASMtools](ASMtools)放到（合并到）你的汇编工作区，这样就可以使用上面的这些一键编译运行的特性(目前只支持windows下使用dosbox运行TASM工具，linux下或者使用MASM应该类似，需要自己编写相关脚本（我不会）)
