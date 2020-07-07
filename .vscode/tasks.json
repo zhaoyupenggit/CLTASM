@@ -6,12 +6,17 @@
         {
             "label": "DosboxTasmCurrentFile",
             "type": "shell",
-            "command": "${workspaceRoot}\\ASMtools\\ASMit.bat",
-            "args": [
-                "${input:dosboxasm}",
-                "${workspaceRoot}",
-                "${file}"
-            ],
+            "windows":{
+                "command": "${workspaceRoot}\\ASMtools\\ASMit.bat",
+                "args": [
+                    "${input:dosboxasm}",
+                    "${workspaceRoot}\\ASMtools",
+                    "${file}"
+                    ],
+            },
+            "linux":{
+                "command": "${workspaceRoot}/ASMtools/asmit.sh \"${file}\" -m ${input:dosboxasm} -d ${workspaceRoot}/ASMtools",
+            },
             "presentation": {
                 "echo": true,
                 "focus": true,
