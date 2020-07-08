@@ -1,16 +1,16 @@
 # !/bin/bash
 # this is a script for use dosbox to run TASM/MASM tools
 # ./asmit.sh <file> [-d <asmtools> -m <mode>]
-tool='./'
-dd=./Dosbox/
+tool="$(dirname $0)/"
+db=$tool/Dosbox/
 mode='1'
 # check whether installed dosbox
 if type dosbox
     then 
-        echo *dosbox installed
+        echo !Msg:  dosbox installed
     else
-        echo *You need install dosbox first
-        echo **Maybe You can use:sudo apt install dosbox
+        echo !Msg:  You need install dosbox first
+        echo !Msg:  *Maybe You can use:sudo apt install dosbox
         exit
     fi
 # check the file path installed
@@ -42,22 +42,28 @@ elif [ -r "$1" ]
 then
     file=$1
     # get the options
-    echo ========
-    cd  "$(dirname $0)"
-    cd "$tool"
+    echo 
     shift
     while getopts :m:d: opt
     do
         case "$opt" in
             m) mode=$OPTARG;;
-            d) tool=$OPTARG;;
+            d) tool=$OPTARG
+             if [ -d ${tool} ];
+             then
+                echo Your directory concludes
+                ls ${tool}
+             else
+                echo invalid ${tool} not a readable directory
+                exit 
+                fi;;
             *) echo "unknown option: $opt";;
         esac
     done
     # output infomation
-    echo *ASMtoolsfrom:$(pwd)
-    echo *ASMfilefrom:$file
-    echo *Mode:$mode Time:$(date)
+    echo !Msg:  ASMtoolsfrom:$(pwd)
+    echo !Msg:  ASMfilefrom:$file
+    echo !Msg:  Mode:$mode Time:$(date)
     # check the file
     if [ $mode != A ] && [ $mode != B ] 
     then
@@ -70,23 +76,26 @@ then
             exit
             fi
         fi
-        ls test/ || mkdir test && rm test/*.*
-        cp "$file" test/T.ASM
+        # copy file to test
+        ls ${tool}test/ || mkdir ${tool}test && rm ${tool}test/*.*
+        cp "$file" ${tool}test/T.ASM
         # echo deleted temp files 
     fi
-    echo ==============
+    echo 
     pwd
     # do the operation
+    cd ${tool}
     case "$mode" in
     0)
-        echo *Copy file to Test folder and dosbox at the folder
-        dosbox -conf "${dd}bigbox.conf" -noautoexec\
+        echo !Msg:  Copy file to Test folder and dosbox at the folder
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf "${db}bigbox.conf" -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\masm;C:\tasm" -c "c:" -c "cd test"\
         -c "dir"
         exit;;
     1)
-        echo *Output in terminal
-        echo *[dosbox] status:
+        echo !Msg:  Output in terminal
+        echo "!Msg:  [dosbox] status:"
         dosbox -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\TASM;C:\masm" -c "c:" -c "cd test"\
         -c "tasm/zi T.ASM>>T.TXT"\
@@ -94,79 +103,87 @@ then
         -c "if exist T.EXE T>T.OUT"\
         -c "exit"
         echo 
-        echo "*[dosbox] output:"
+        echo "!Msg:  [dosbox] output:"
         cat test/T.TXT|tr -d '\r'|tr -s '\n'
         if [ -r test/T.OUT ];then
-        echo "*[YOUR program] OUTPUT:"
+        echo "!Msg:  [YOUR program] OUTPUT:"
         cat test/T.OUT
         echo 
         fi
         exit;;
     2)
-        echo *Output in dosbox,input "exit" or ctrl-F9 or click 'x' to exit dosbox
-        dosbox -conf ${dd}bigbox.conf -noautoexec\
+        echo !Msg:  Output in dosbox,input "exit" or ctrl-F9 or click 'x' to exit dosbox
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf ${db}bigbox.conf -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\TASM" -c "c:" -c "cd test"\
         -c "tasm/zi T.ASM" -c "tlink/v/3 T.OBJ" -c "T.EXE"
         exit;;
     3)
-        echo *Output in dosbox ，press any key to exit dosbox
-        dosbox -conf ${dd}bigbox.conf -noautoexec\
+        echo !Msg:  Output in dosbox ，press any key to exit dosbox
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf ${db}bigbox.conf -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\TASM" -c "c:" -c "cd test"\
         -c "tasm/zi T.ASM" -c "tlink/v/3 T.OBJ"-c "T.EXE"\
         -c "pause" -c "exit"
         exit;;
     4)
-        echo *Tasm and turbo debugger in dosbox
+        echo !Msg:  Tasm and turbo debugger in dosbox
         cp ./TASM/TDC2.TD test/TDCONFIG.TD
-        dosbox -conf ${dd}bigbox.conf -noautoexec\
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf ${db}bigbox.conf -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\TASM" -c "c:" -c "cd test"\
         -c "tasm/zi T.ASM" -c "tlink/v/3 T.OBJ"\
         -c "Td t"
         exit;;
     5)
-        echo *Output in terminal
-        echo *[dosbox] status:
-        dosbox -conf ${dd}bigbox.conf -noautoexec\
+        echo !Msg:  Output in terminal
+        echo "!Msg:  [dosbox] status:"
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf ${db}bigbox.conf -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\MASM" -c "c:" -c "cd test"\
         -c "masm T.ASM;>T.txt"\
         -c "if exist T.OBJ link T.obj;>>T.txt"\
         -c "if exist T.EXE T>T.out"\
         -c "exit"
         echo 
-        echo *[dosbox] output:
+        echo !Msg:  [dosbox] output:
         cat test/T.TXT|tr -d '\r'|tr -s '\n'
         if [ -r test/T.OUT ];then
-            echo *[YOUR program] OUTPUT:
+            echo !Msg:  [YOUR program] OUTPUT:
             cat test/T.OUT
         echo 
         fi
         exit;;
     6)
-        echo *Output in dosbox,input "exit" or ctrl-F9 or click 'x' to exit dosbox
-        dosbox -conf ${dd}bigbox.conf -noautoexec\
+        echo !Msg:  Output in dosbox,input "exit" or ctrl-F9 or click 'x' to exit dosbox
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf ${db}bigbox.conf -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\MASM" -c "c:" -c "cd test"\
         -c "masm T.ASM;" -c "link T.OBJ;" -c "T.EXE"
         exit;;
     7)
-        echo *Output in dosbox ，press any key to exit dosbox
-        dosbox -conf ${dd}bigbox.conf -noautoexec\
+        echo !Msg:  Output in dosbox ，press any key to exit dosbox
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf ${db}bigbox.conf -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\MASM" -c "c:" -c "cd test"\
         -c "masm T.ASM;" -c "link T.OBJ;"-c "T.EXE"\
         -c "pause" -c "exit"
         exit;;
     8)
-        echo *Masm and debug in dosbox
-        dosbox -conf ${dd}bigbox.conf -noautoexec\
+        echo !Msg:  Masm and debug in dosbox
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf ${db}bigbox.conf -noautoexec\
         -c "mount c \"$tool\"" -c "set path=%path%;C:\MASM" -c "c:" -c "cd test"\
         -c "masm T.ASM;" -c "link T.OBJ;"\
         -c "debug T.EXE"
         exit;;
     A)
-        echo *Turbo debugger without tasm first in dosbox
+        echo !Msg:  Turbo debugger without tasm first in dosbox
         cp ./TASM/TDC2.TD test/TDCONFIG.TD
         if [ -r test/T.EXE ]
         then 
-        dosbox -conf ${dd}bigbox.conf \
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf ${db}bigbox.conf \
         -c "mount c \"$tool\"" -c "set path=%path%;C:\TASM" -c "c:" -c "cd test"\
         -c "td t"
         else
@@ -174,10 +191,11 @@ then
         fi
         exit;;
     B)
-        echo *Masm debugg without tasm first in dosbox
+        echo !Msg:  Masm debugg without tasm first in dosbox
         if [ -r test/T.EXE ]
         then
-        dosbox -conf ${dd}bigbox.conf \
+        echo "!Msg:  [dosbox] status:"
+        dosbox -conf ${db}bigbox.conf \
         -c "mount c \"$tool\"" -c "set path=%path%;C:\MASM" -c "c:" -c "cd test"\
         -c "debug t.exe"
         else
