@@ -1,92 +1,102 @@
-@echo on
-if "%1"=="" goto info
+@echo off
+if "%1" == "" goto info
+if "%1" == "/h" goto info1
+if "%1" == "/hm" goto info2
+if "%1" == "/m" goto Mode
 :mainpart
-copy T.asm TEMP.asm
-del T.*
-copy TEMP.asm T.asm
-if %2==t goto tasm
-if %2==m goto masm
+:delpastfile
+rename T.asm tempor.ary
+if exist T.* del T.*
+rename tempor.ary T.asm
+
+set path=%path%c:\tasm
+if "%1" == "0" goto end
+if "%1" == "t" goto tasm
+if "%1" == "m" goto masm
+echo invalid tool %2
 :tasm
-set path=%path%;c:\tasm;
-if %3==r  goto tasmrun
-if %3==rr goto tasmrunredirect
-if %3==re goto tasmrunleave
-if %3==d  goto turbodebug
-if %3==ad goto tasmtd
-    :tasmrun
-        tasm T.asm
-        if exist T.obj tlink T
-        echo -----
-        if exist T.exe T
+    set path=%path%;c:\tasm
+    if "%2" == "rr" goto trr
+    if "%2" == "d" goto td
+    tasm/zi T.asm
+    if exist T.obj tlink/v/3 T
+    if "%2" == "rd" goto td
+    if exist T.exe T
+    if "%2" == "r" goto end
+    if "%2" == "rp" pause
+    goto end
+    :td
+        copy c:\tasm\tdc2.td tdconfig.td
+        td t
         goto end
-    :tasmrunredirect
+    :trr
         tasm T.asm>T.txt
         if exist T.obj tlink T>>T.txt
         if exist T.exe T>T.out
         goto end
-    :tasmrunleave
-        tasm T.asm
-        if exist T.obj tlink T
-        if exist T.exe T
-        pause
-        exit
-        goto end
-    :tasmtd
-        c:/tasm/TDCONF1.TD
-        tasm/zi T.asm
-        if exist T.obj tlink/v/3 T
-        if exist T.exe td T
-        goto end
-    :turbodebug
-        copy c:\tasm\TDCONF1.TD c:\tasm\TDCONFIG.TD
-        if exist T.exe td T
-        goto end
+        
 :masm
 set path=%path%;c:\masm
-cd test
-if %3==r  goto masmrun
-if %3==rr goto masmrunredirct
-if %3==re goto masmrunleave
-if %3==d  goto mdebug
-if %3==ad goto masmdebug
-    :masmrun
-        masm T.asm;
-        if exist T.obj link T;
-        echo -----
-        if exist T.exe T
+    if "%2" == "rr" goto mrr
+    if "%2" == "d" goto debug
+    masm T.asm;
+    if exist T.obj link T;
+    if "%2" == rd goto debug
+    if exist T.exe T
+    if "%2" == "rp" pause
+    goto end
+    :debug
+        debug t
         goto end
-    :masmrunredirct
-        masm T.asm;>T.txt
-        if exist T.obj link T;>>T.txt
+    :mrr
+        tasm T.asm>T.txt
+        if exist T.obj tlink T>>T.txt
         if exist T.exe T>T.out
         goto end
-    :masmrunleave
-        masm T.asm;
-        if exist T.obj link T;
-        if exist T.exe T
-        pause
-        exit
-        goto end
-    :masmdebug
-        c:/masm/TDCONF1.TD
-        masm T.asm;
-        if exist T.obj link T;
-        if exist T.exe debug T
-        goto end
-    :mdebug
-        if exist T.exe debug T
-        goto end
-
-
-
-
-
+goto end
+:Mode
+    if "%2" == "0" asm 0
+    if "%2" == "1" asm t rr q
+    if "%2" == "2" asm t r 
+    if "%2" == "3" asm t rp q
+    if "%2" == "4" asm t rd q
+    if "%2" == "5" asm m rr q
+    if "%2" == "6" asm m r 
+    if "%2" == "7" asm m rp q
+    if "%2" == "8" asm m rd q
+    if "%2" == "A" asm t d q
+    if "%2" == "B" asm m d q
+    goto end
 
 :info
-echo %%1 file path %%2 %%3 %%4 choose Mode
-echo %%2 m:masm t:masm
-echo %%3 r:run in dosbox rl:run in dosbox and leave dosbox
-echo %%3 rr:run redirect to file
-echo    ad:asm and debug d:debug without asm
+    echo "asm -m <mode> [q];           asm/hm for help"
+    echo "asm t/m r/rr/rp/rd/d, asm 0; asm/h for help"
+    goto end
+:info1
+    echo "T:use TASM M:use MASM"
+    echo "  r:run in dosbox"
+    echo " rr:run redirected to file"
+    echo " rp:run pause exit"
+    echo " rd:tasm run and td"
+    echo "asm T d:TASM turbo debugger"
+    echo "asm M d:MASM debug"
+    echo "asm 0  :do nothing"
+    goto end
+:info2
+    echo "0 asm 0"
+    echo "1 asm t rr q"
+    echo "2 asm t r "
+    echo "3 asm t rp q"
+    echo "4 asm t rd q"
+    echo "5 asm m rr q"
+    echo "6 asm m r "
+    echo "7 asm m rp q"
+    echo "8 asm m rd q"
+    echo "A asm t d q"
+    echo "B asm m d q"
+    goto end
 :end
+if "%1" == "0" dir
+if "%3" == "q" exit
+
 

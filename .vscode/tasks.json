@@ -4,8 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "DosboxTasmCurrentFile",
+            "label": "ASM CurrentFilei",
             "type": "shell",
+            "command": "${workspaceRoot}/ASMtools/asmit.sh \"${file}\" -m ${input:dosboxasm} -d ${workspaceRoot}/ASMtools",
             "windows":{
                 "command": "${workspaceRoot}\\ASMtools\\ASMit.bat",
                 "args": [
@@ -13,9 +14,6 @@
                     "${workspaceRoot}\\ASMtools",
                     "${file}"
                     ],
-            },
-            "linux":{
-                "command": "${workspaceRoot}/ASMtools/asmit.sh \"${file}\" -m ${input:dosboxasm} -d ${workspaceRoot}/ASMtools",
             },
             "presentation": {
                 "echo": true,
@@ -28,7 +26,70 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "dependsOn": ["preASM"],
+        },
+        {
+            "label": "ASM CurrentFile batinbox",
+            "type": "shell",
+            "command": "dosbox",
+            "windows":{
+                "command":"start/min" ,
+                "args": [
+                    "${workspaceRoot}\\ASMtools\\dosbox\\DOSBox.exe",
+                    "-conf",
+                    "${workspaceRoot}\\ASMtools\\dosbox\\bigbox.conf",
+                    "-c",
+                    "mount d \\\"${workspaceRoot}\\ASMtools\\test\\\"",
+                    "-c",
+                    "mount c \\\"${workspaceRoot}\\ASMtools\\\" ",
+                    "-c",
+                    "d:",
+                    "-c",
+                    "ASM/m ${input:dosboxasm}",
+                ],
+            },
+            "presentation": {
+                "echo": true,
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": ["preASM"],
+        },
+        {
+            "label":"preASM",//将需要汇编的源代码复制到汇编工具所在文件夹
+            "type":"shell",
+            "command":"cp",
+            "windows":{
+                "command":"copy"
+            },
+            "args": [
+                {
+                  "value": "${file}",
+                  "quoting": "strong"
+                },
+                {
+                    "value": "${workspaceRoot}\\ASMtools\\test\\T.asm",//第二处 汇编工具目录 将需要汇编的源代码（vscode当前文件）复制到汇编工具所在目录
+                    "quoting": "strong"
+                  }
+                ],
+                "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "problemMatcher": [],
+            
         },
     ],
     "inputs": [
