@@ -1,117 +1,152 @@
 @echo off
 :: GB 2312
-:: %1为选择执行命令的方式 %2为汇编工具所在文件夹 %3为需要操作的文件
+:: %1为需要操作的文件 %2为选择执行命令的方式 %3为汇编工具和dosbox所在文件夹 
 ::输出编译信息
-if "%1" == "" echo "no invar. please use ASMit.BAT <Mode> <WorkspaceRootPpath> <filepath>" && exit 4
-set "aa=%2"
-set "dd=%2%cc%\Dosbox\"
-echo Time:%time% WorkspaceRoot:%2
-echo DOSBox frome %dd% ASMtoolsfrom:%aa%
-echo Mode:%1 ASMfilefrom:%3
+if "%~f1" NEQ "" goto SetValues
+    echo "asmit.bat <file> [<mode>] [<toolsdir>]"
+    echo "<file> file to be used "
+    echo "<mode> choose mode the way display default is 1"
+    echo "0 copy the files open dosbox add path"
+    echo "1 tasm run output in shell"
+    echo "2 tasm run output in dosbox"
+    echo "3 tasm run pause exit"
+    echo "4 tasm run and td"
+    echo "5 masm run ouput in shell"
+    echo "6 masm run output in dosbox"
+    echo "7 masm run pause exit"
+    echo "8 masm and debug"
+    echo "A open turbo debugger at test folder"
+    echo "B open masm debug at test folder"
+    echo "<toolsdir> the tools folder with subdir masm,tasm,test"
+    goto end
+:SetValues
+set "cdo=%CD%"
+set "file=%~f1"
+set "mode=1"
+set "tool=%~dp0"
+    :: 运行中产生的文件存放的位置**可自行修改**
+    set "test=%tool%test\"
+    if not exist %test% mkdir %test%
+    ::dosbox使用的提高resolution的配置文件
+    set "bigboxconf=%tool%dosbox\bigbox.conf" 
+    ::TASM调试工具TD的配置文件
+    set "TDconfig=%tool%tasm\TDC2.td"
+    ::dosbox路径及需要先使用的一些配置
+    set "dosbox=%tool%dosbox\DOSBox.exe"
+    set mcd=-noautoexec -noconsole ^
+    -c "mount c \"%tool%\"" -c "mount d \"%test%\"" ^
+    -c "set path=C:\TASM;C:\masm" -c "d:"
+        ::根据输入调整变量
+        if "%2" neq "" set "mode=%2"
+        if "%3" neq "" set "tool=%~f3"
+
+:OutputInfo
+    echo Time:%time%
+    echo ASMtoolsfrom:%tool%
+    echo Mode:%mode% ASMfilefrom:%file%
 ::运行dosbox的准备工作
-if not exist %aa%\test mkdir %aa%\test
-cd %aa%\test
-set mcd=-noautoexec -noconsole -c "mount c \"%aa%\"" -c "set path=C:\TASM;C:\masm" -c "c:" -c "cd test"
-::根据%1指令执行相应调试操作
-if %1==A goto dealA
-if %1==B goto dealB
-::进行汇编之前的准备工作，清理临时文件，写入当前文件
-if %~x3==.ASM goto NEXT
-if %~x3==.asm goto NEXT
-echo %~x3 is not a supported assembly file
-exit 1
-:NEXT
-if exist T.* del T.*>nul
-copy %3 T.ASM>nul
-::根据%1指令选择不同的编译运行操作
-if %1==0 goto deal0 
-if %1==1 goto deal1 
-if %1==2 goto deal2 
-if %1==3 goto deal3 
-if %1==4 goto deal4 
-if %1==5 goto deal5 
-if %1==6 goto deal6 
-if %1==7 goto deal7 
-if %1==8 goto deal8 
-echo invalid selection %1
-exit 2
+cd %test%
+echo =========
+    :ModeSelect
+        if %mode%==A goto dealA
+        if %mode%==B goto dealB
+    ::进行汇编之前的准备工作，清理临时文件，写入当前文件
+    if "%~x1"==".ASM" goto NEXT
+    if "%~x1"==".asm" goto NEXT
+    echo %~x1 is not a supported assembly file
+    goto end
+    :NEXT
+        if not exist "%file%" echo no such file && goto end
+        if exist T.* del T.*
+        copy "%file%" T.ASM
+        if "%mode%"=="0" goto deal0 
+        if "%mode%"=="1" goto deal1 
+        if "%mode%"=="2" goto deal2 
+        if "%mode%"=="3" goto deal3 
+        if "%mode%"=="4" goto deal4 
+        if "%mode%"=="5" goto deal5 
+        if "%mode%"=="6" goto deal6 
+        if "%mode%"=="7" goto deal7 
+        if "%mode%"=="8" goto deal8 
+    echo invalid mode %mode%
+    goto end
+
 :deal0
     echo *Copy file to Test folder and dosbox at the folder
-    %dd%DOSBox -conf %dd%bigbox.conf %mcd%^
-    -c"dir"
-    exit
+    %dosbox% %mcd% -conf %bigboxconf%^
+    -c "dir"
+    goto end
 :deal1
     echo *Output in terminal
     echo [DOSBOX] OUTPUT:
-    %dd%DOSBox %mcd%^
+    %dosbox% %mcd% ^
     -c "tasm/zi T.ASM>>T.txt"^
     -c "if exist T.OBJ tlink/v/3 T>>T.txt"^
     -c "if exist T.EXE T>T.out"^
     -c "EXIT"
     ::输出结果，在前面增加了两个空格
     FOR /F "eol=; tokens=* delims=, " %%i in (T.txt) do echo   %%i
-    if exist T.EXE echo [YOUR program] OUTPUT:
+    if exist T.OUT echo [YOUR program] OUTPUT:
     ::TODO 显示运行结果，不知道可不可以实现同时打印行号
     FOR /F "eol=; tokens=* delims=, " %%i in (T.out) do echo   %%i
-    exit
+    goto end
 :deal2
     echo *Output in dosbox,input "exit" or ctrl-F9 or click 'x' to exit dosbox
-    %dd%DOSBox -conf %dd%bigbox.conf %mcd% ^
+    %dosbox% -conf "%bigboxconf%" %mcd% ^
     -c "tasm/zi T.ASM" -c "tlink/v/3 T.OBJ"-c "T.EXE"
-    exit
+    goto end
 :deal3
     echo *Output in dosbox ，press any key to exit dosbox
-    %dd%DOSBox -conf %dd%bigbox.conf %mcd%^
+    %dosbox% -conf "%bigboxconf%" %mcd%^
     -c "tasm/zi T.ASM" -c "tlink/v/3 T.OBJ"-c "T.EXE"^
     -c "pause" -c "exit"
-    exit
+    goto end
 :deal4
     echo *Tasm and turbo debugger in dosbox
-    copy ..\tasm\TDC2.td TDCONFIG.TD
-    :: 使得td.exe 使用这个配置文件
-    %dd%DOSBox -conf %dd%bigbox.conf %mcd%^
+    if exist "%TDconfig%" copy "%TDconfig%" TDCONFIG.TD
+    %dosbox% -conf "%bigboxconf%" %mcd%^
     -c "tasm/zi T.ASM" -c "tlink/v/3 T.OBJ"^
     -c "Td t"
-    exit
+    goto end
 :deal5
     echo *Output in terminal
     echo [DOSBOX] OUTPUT:
-    %dd%DOSBox %mcd%^
+    %dosbox% %mcd%^
     -c "masm T.ASM;>T.txt"^
     -c "if exist T.OBJ link T.obj;>>T.txt"^
     -c "if exist T.EXE T>T.out"^
     -c "exit"
     FOR /F "eol=; tokens=* delims=, " %%i in (T.txt) do echo   %%i
-    if exist T.EXE echo [YOUR program] OUTPUT:
+    if exist T.OUT echo [YOUR program] OUTPUT:
     FOR /F "eol=; tokens=* delims=, " %%i in (T.out) do echo   %%i
-    exit
+    goto end
 :deal6
     echo *Output in dosbox,input "exit" or ctrl-F9 or click 'x' to exit dosbox
-    %dd%DOSBox -conf %dd%bigbox.conf %mcd% ^
+    %dosbox% -conf "%bigboxconf%" %mcd% ^
     -c "masm T.ASM;" -c "link T.OBJ;"-c "T.EXE"
-    exit
+    goto end
 :deal7
     echo *Output in dosbox ，press any key to exit dosbox
-    %dd%DOSBox -conf %dd%bigbox.conf %mcd%^
+    %dosbox% -conf "%bigboxconf%" %mcd%^
     -c "masm T.ASM;" -c "link T.OBJ;"-c "T.EXE"^
     -c "pause" -c "exit"
-    exit
+    goto end
 :deal8
     echo *Masm and debug in dosbox
-    :: 使得td.exe 使用这个配置文件
-    %dd%DOSBox -conf %dd%bigbox.conf %mcd%^
+    %dosbox% -conf "%bigboxconf%" %mcd%^
     -c "masm T.ASM;" -c "link T.OBJ;"^
     -c "debug T.EXE"
-    exit
+    goto end
 :dealA
-    if  exist TD.TR echo tr exist
-    if not exist T.EXE  echo no EXE file && exit 3
+    if not exist T.EXE  echo no EXE file && goto end
     echo *Turbo debugger without tasm first in dosbox
-    copy ..\tasm\TDC2.td TDCONFIG.TD
-    %dd%DOSBox -conf %dd%bigbox.conf %mcd%-c "td t"
-    exit
+    if exist "%TDconfig%" copy "%TDconfig%" TDCONFIG.TD
+    %dosbox% -conf "%bigboxconf%" %mcd%-c "td t"
+    goto end
 :dealB
-    if not exist T.EXE  echo no EXE file && exit 3
+    if not exist T.EXE  echo no EXE file && goto end
     echo *Masm debugg without tasm first in dosbox
-    %dd%DOSBox -conf %dd%bigbox.conf %mcd%-c "debug t.exe"
-    exit
+    %dosbox% -conf "%bigboxconf%" %mcd%-c "debug t.exe"
+    goto end
+:end
+cd %cdo%
