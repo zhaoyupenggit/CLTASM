@@ -1,0 +1,40 @@
+;将四位十六进制数转换为五位十进制数
+.486
+DATA 	SEGMENT USE16
+	NUM  DB 5 DUP(?)
+         DB '$'
+    COUNT DW 0FFFH
+DATA ENDS
+CODE	SEGMENT USE16
+ ASSUME CS:CODE,DS:DATA
+BEG:    MOV AX,DATA
+        MOV DS,AX
+        CALL DECPC
+        MOV AH,9H
+        LEA DX,NUM
+        INT 21H
+        MOV AH,4CH
+        INT 21H
+;子程序：将COUNT中的数据转化为十进制数后转为ASCII码存在NUM中
+DECPC PROC
+		MOV CX,5
+        MOV AX,COUNT
+	    LEA BX,NUM+4				
+DBEG:   MOV DX,0
+        MOV SI,10
+		DIV SI
+		ADD DX,30H
+		MOV [BX],DL
+		DEC BX
+		MOV DX,0
+		LOOP DBEG
+    	LEA BX,NUM
+DAGA:	CMP BYTE PTR [BX],'0'
+		JNZ DEXIT
+		MOV BYTE PTR [BX],0
+		INC BX
+		JMP DAGA
+DEXIT:   RET
+DECPC ENDP
+CODE ENDS
+END BEG
