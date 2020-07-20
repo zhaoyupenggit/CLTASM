@@ -1,4 +1,4 @@
-.486
+.386
 CODE   SEGMENT   USE16
        ASSUME     CS:CODE
 BEG:    MOV    BX,5678H

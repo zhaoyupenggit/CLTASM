@@ -1,5 +1,5 @@
 ;日时钟中断，不精确计时的日时钟中断
-.486
+.386
 DATA      SEGMENT  USE16
 	MESG      DB      'HELLO！',0DH,0AH,'$'
 	ICOUNT    DB      18

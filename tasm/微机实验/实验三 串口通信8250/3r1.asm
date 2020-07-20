@@ -1,5 +1,5 @@
 ;串口通信查询发查询收的代码
-.586
+.386
 DATA	SEGMENT USE16
 TEXT	DB    'THE tie tied the tired tiger,THE CANNER CAN CAN A CAN '
         DB      0DH,0AH

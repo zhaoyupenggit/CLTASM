@@ -1,5 +1,5 @@
 ;子程序调用示例
-.486
+.386
 CODE  SEGMENT USE16
            ASSUME  CS:CODE
 BEN   DB      10101110B;=174

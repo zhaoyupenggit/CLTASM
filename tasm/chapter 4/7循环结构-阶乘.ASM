@@ -1,4 +1,4 @@
-.586
+.386
 DATA      SEGMENT USE16
 SUM       DW  ?
 DATA      ENDS

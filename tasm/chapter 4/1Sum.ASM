@@ -1,5 +1,5 @@
 ;简单程序实现加法运算，没有输入输出
-.586
+.386
 DATA SEGMENT USE16
 	SUM DB ?
 DATA ENDS

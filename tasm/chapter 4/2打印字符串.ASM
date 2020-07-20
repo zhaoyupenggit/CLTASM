@@ -1,5 +1,5 @@
  ;21h的9号功能打印字符串
- .586
+ .386
  data segment use16
  mesg db 'I LOVE YOU DONT U KNOW','$'
  data ends

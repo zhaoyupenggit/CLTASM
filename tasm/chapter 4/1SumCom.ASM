@@ -1,7 +1,7 @@
 ;这是汇编为com文件的代码示例
 ;链接时需要加上参数/t 例如tlink/t T.ASM
 ;没有输入输出
-.586
+.386
 CODE	SEGMENT	USE16
 	ASSUME  CS:CODE
 	ORG     100H

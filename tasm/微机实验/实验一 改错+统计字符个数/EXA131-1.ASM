@@ -1,6 +1,6 @@
 ;脚痛剁脚修改法
 ;file name EXA1311.ASM
-.486
+.386
 DATA SEGMENT USE16
 MESG DB '25+9='
      DB 0,0

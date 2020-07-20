@@ -1,7 +1,7 @@
 ;from the chapter 4 page 66
 ;EXAMPLE of LOOP
 ;return the 1+2+...+100
-.486
+.386
 DATA SEGMENT USE16
 SUM     DW ?
 BUF     DB '1+2+...+100=', 4 DUP(?) ,'H $'

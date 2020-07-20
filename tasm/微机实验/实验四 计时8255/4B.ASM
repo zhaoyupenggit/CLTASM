@@ -1,5 +1,5 @@
 ;增加了对每次显示功能进行计数功能的版本
-.486
+.386
 DATA 	SEGMENT USE16
 			DB 16 DUP(?)
 	MESG0   DB 'No.'

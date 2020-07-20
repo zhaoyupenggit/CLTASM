@@ -1,7 +1,7 @@
 ;from ppt chapter 4  page79
 ;example of macro
 ;BIOS macro
-.486
+.386
 DISP MACRO Y,X,VAR,LENGTH,COLOR
         MOV AH,13H
         MOV AL,1

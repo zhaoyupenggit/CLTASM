@@ -1,6 +1,6 @@
 ;exp1.2 bookexp2.09
 ;将符合要求的数据记录下来了
-.586
+.386
 DATA SEGMENT USE16
 STR1    DB 'STRING='
 BUF     DB 42H,45H,44H,24H,'sadfsadf',43H,66

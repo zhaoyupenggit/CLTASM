@@ -1,5 +1,5 @@
 ; 宏指令调用例子
-.486
+.386
 CMPDISP   MACRO    NN
 LOCAL   LAST, NEXT
         MOV DL,0  ;DL清0

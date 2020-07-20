@@ -1,6 +1,6 @@
 ;查询发 中断收
 ;从键盘输入字符串
-.586
+.386
 DATA	SEGMENT  USE16
         OLD0C   DD ?
         FLAG    DB 0

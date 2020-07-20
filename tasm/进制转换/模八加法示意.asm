@@ -1,7 +1,7 @@
 ;模8加法
 ;比较直观地显示计算机中的加法
 ;TODO:如果能将标志位的信息也打印出来就好了
-.586
+.386
 CODE SEGMENT USE16
 ASSUME CS:CODE
 MESG DB 'CF=0,OF=0'

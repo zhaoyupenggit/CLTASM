@@ -1,6 +1,6 @@
 ; 宏指令调用
 ; BIOS 13H功能 实现彩色打印多个字符串
-.486
+.386
 DISP	MACRO	Y, X, VAR, LENGTH, COLOR
 		 MOV         AH,13H
 		 MOV         AL,1

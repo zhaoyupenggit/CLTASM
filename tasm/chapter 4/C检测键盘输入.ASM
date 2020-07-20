@@ -1,6 +1,6 @@
 ;检测键盘是否有输入
 ;example of BIOS 16h 00 01 function
-.586
+.386
 DATA SEGMENT USE16
   MESG        DB  'BIOS INVOKES!', 0DH,0AH,'$'
   BUF         DB   ?

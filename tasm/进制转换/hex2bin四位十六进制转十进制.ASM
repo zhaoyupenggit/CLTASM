@@ -1,5 +1,5 @@
 ;将四位十六进制数转换为五位十进制数
-.486
+.386
 DATA 	SEGMENT USE16
 	NUM  DB 5 DUP(?)
          DB '$'

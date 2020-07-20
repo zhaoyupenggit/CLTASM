@@ -1,5 +1,5 @@
 ;exp1.2 bookexp2.09
-.586
+.386
 DATA SEGMENT USE16
 BUF    DB 'ABCD'
 L      EQU $-BUF

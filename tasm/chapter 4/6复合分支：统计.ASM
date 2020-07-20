@@ -1,7 +1,7 @@
 ;统计符合条件的对象数
 ;from ppt chapter 4,page 61
 ;符合分支示例example of the use of complex branchees
-.586
+.386
 DATA SEGMENT USE16
 NUM DW 1000,23232,2300,4895,2999,1299,8769,4545,9990
 DATA ENDS

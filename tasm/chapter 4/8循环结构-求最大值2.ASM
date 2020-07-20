@@ -1,6 +1,6 @@
 ; 假设从BUF单元开始为一个 ASCII码字符串,找出其中的最大数送屏幕显示。
 ; 代码1
-.486
+.386
 DATA   SEGMENT USE16
 BUF    DB    'QWERTYUIOP123'
 FLAG   DB     -1 ;设置串结束标志

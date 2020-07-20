@@ -1,6 +1,6 @@
 ;修改后的代码
 ;EXA1312.ASM
-.486
+.386
 DATA SEGMENT USE16		;关键字segme nt 去除多余的空格
 SUM  DB ?,?			;去除多余的逗号
 MESG DB '25+9='

@@ -1,7 +1,7 @@
 ; 【例】 对主串口进行外环自动测试，将下列测试电文10行，经主串口发出，通过外环短路线接收，
 ;显示在屏幕上，测试电文如下：
 ; THE QUICK BROWN FOX JUMPS OVER LAZY DOG
-.586
+.386
 DATA	SEGMENT USE16
 TEXT	DB    'THE QUICK BROWN FOX JUMPS OVER LAZY DOG'
 DB      0DH,0AH

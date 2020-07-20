@@ -1,7 +1,7 @@
 ;彩色打印
 ;example of the use of BIOS INT 10H
 ;from ppt chapter 4
-.486
+.386
 DATA SEGMENT USE16
 MESG1   DB 'HELLO$'
 MESG2   DB 'I AM A STUDENT'

@@ -1,7 +1,7 @@
 ;the code need to adjust 原始代码
 ;--------------------------------------------
 ;FILENAME EXA131.ASM
-.486
+.386
 DATA SEGME NT USE16 ;关键字segme nt 有多余的空格 
 SUM  DB ?,?,;最后一个逗号多余
 MESG DB '25+9='

@@ -1,5 +1,5 @@
 ;双中断方式，未实现
-.586
+.386
 DATA	SEGMENT  USE16
         OLD0C   DD ?
         FLAG    DB 0

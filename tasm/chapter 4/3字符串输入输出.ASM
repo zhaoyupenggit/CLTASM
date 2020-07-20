@@ -2,7 +2,7 @@
 ;ppt chapter 4,example for the instructions for DOS
 ;21H的9号功能打印字符串mov ah 09h (int 21h) print string
 ;21H的0AH功能获取字符串move ah 0ah(int 21h) get string
- .586
+ .386
 DATA SEGMENT USE16
  MESG DB 0DH,0AH
       DB 'WHAT IS YOUR NAME?--$'

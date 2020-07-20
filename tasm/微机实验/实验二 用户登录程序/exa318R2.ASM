@@ -1,5 +1,5 @@
 ;使用DOS功能调用来实现界面显示功能
-.486
+.386
 SCOMP MACRO S1,L1,S2,L2,
 		LOCAL NEQ,CEQ,IEQ
 		MOV CL,L1
