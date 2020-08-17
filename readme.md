@@ -1,3 +1,16 @@
 # Hi ASM
 
-这是学习NJUPT微机时整理的一些代码，大部分是在TASM下写成，在[VACode+MASM/TASM](https://marketplace.visualstudio.com/items?itemName=xsro.masm-tasm)下测试。
+- [tasm](tasm/)文件夹是学习NJUPT微机时整理的一些代码，大部分是在TASM下写成
+- [interesting](interesting/)是在网上寻找的有趣的代码,具体来源见下表
+
+|名称和链接|描述|TASM是否通过|
+|---|----|---|
+|[asm16_projects](https://github.com/hasherezade/asm16_projects)|ASCII画图，猜字符，井字棋|:heavy_check_mark:|
+|[ASVr_Piano](https://github.com/WolfDroid/ASVr_Piano)|弹钢琴|:heavy_check_mark:|
+|[snake](https://github.com/bengabay11/snake)|贪吃蛇 上下左右键控制方向 好像是w开始|:heavy_check_mark:|
+|[RussiaCube(CSDN)](https://blog.csdn.net/zjbh89757/article/details/53816106)|俄罗斯方块|:heavy_check_mark:(会警告，但是完全可玩)|
+|[TASM-8086-Lab-Codes](https://github.com/shb9019/TASM-8086-Lab-Codes)|TASM 8086 Assembly codes for Microprocessors Lab as part of course plan for 3rd Year CSE NIT Trichy|:heavy_check_mark:|
+|[dos-virus](https://github.com/johangardhage/dos-virus)|好像是一个病毒，不敢试|  |
+|[file-manager-assembly-tasm](https://github.com/pishangujeniya/file-manager-assembly-tasm)|文件系统|:heavy_check_mark:（TASM通过但是有警告信息）|
+
+在[VACode+MASM/TASM](https://marketplace.visualstudio.com/items?itemName=xsro.masm-tasm)下测试。
