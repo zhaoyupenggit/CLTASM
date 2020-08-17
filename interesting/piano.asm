@@ -1,3 +1,5 @@
+;this code is originnally from https://github.com/WolfDroid/ASVr_Piano,
+
 ;Deklarasi Model Program yang Digunakan
 .MODEL SMALL
 

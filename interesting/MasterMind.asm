@@ -1,4 +1,5 @@
-﻿; compile with tasm:
+﻿;this code is originnally from https://github.com/hasherezade/asm16_projects 
+; compile with tasm:
 ; tasm <name>.asm
 ; tlink <name>.obj
 

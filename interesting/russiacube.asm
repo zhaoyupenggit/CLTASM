@@ -1,3 +1,4 @@
+;this code is originnaly from https://blog.csdn.net/zjbh89757/article/details/53816106
 DATA SEGMENT
 SEGMENT1C DW 0
 OFF1C DW 0
