@@ -1,7 +1,13 @@
 # Hi ASM
 
 - [tasm](tasm/)文件夹是学习NJUPT微机时整理的一些代码，大部分是在TASM下写成
-- [interesting](interesting/)是在网上寻找的有趣的代码,具体来源见下表
+- [interesting](interesting/)文件夹是在网上寻找的有趣的代码
+
+欢迎补充，只要是在DOSBox中能运行的TASM/MASM代码都欢迎添加
+
+## 来源
+
+这里是interesting文件夹的一些代码来源
 
 |名称和链接|描述|TASM是否通过|
 |---|----|---|
@@ -13,4 +19,4 @@
 |[dos-virus](https://github.com/johangardhage/dos-virus)|好像是一个病毒，不敢试|  |
 |[file-manager-assembly-tasm](https://github.com/pishangujeniya/file-manager-assembly-tasm)|文件系统|:heavy_check_mark:（TASM通过但是有警告信息）|
 
-在[VACode+MASM/TASM](https://marketplace.visualstudio.com/items?itemName=xsro.masm-tasm)下测试。
+所有代码都在VSCode中测试通过了，[VSCode extension MASM/TASM](https://marketplace.visualstudio.com/items?itemName=xsro.masm-tasm)下测试。
