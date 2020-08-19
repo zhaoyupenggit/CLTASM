@@ -1,5 +1,5 @@
 ;这是汇编为com文件的代码示例
-;链接时需要加上参数/t 例如tlink/t T.ASM
+;链接时需要加上参数/t 例如tlink/t T.OBJ
 ;没有输入输出
 .386
 CODE	SEGMENT	USE16
