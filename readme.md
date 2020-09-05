@@ -2,6 +2,8 @@
 
 - [tasm](tasm/)文件夹是学习NJUPT微机时整理的一些代码，大部分是在TASM下写成
 - [interesting](interesting/)文件夹是在网上寻找的有趣的代码
+- [note](https://gitee.com/chenliucx/CLTASM/tree/note/)分支为一些简单的markdown笔记
+- 笔记通过docsify布置到了gitee page上<https://chenliucx.gitee.io/cltasm>
 
 欢迎补充，只要是在DOSBox中能运行的TASM/MASM代码都欢迎添加
 
