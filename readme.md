@@ -1,8 +1,8 @@
 # Hi DOS ASM
 
-- [tasm](tasm/)文件夹是学习NJUPT微机时整理的一些代码，大部分是在TASM下写成
-- [interesting](interesting/)文件夹是在网上寻找的有趣的代码
-- [note](https://gitee.com/chenliucx/CLTASM/tree/note/)分支为一些简单的markdown笔记
+- :file_folder:文件夹[tasm](tasm/)和[微机实验](微机实验)是学习NJUPT微机时整理的一些代码
+- :file_folder:文件夹[interesting](interesting/)是在网上寻找的有趣的代码
+- :evergreen_tree:[note](https://gitee.com/xsro/CLTASM/tree/note/)分支为一些简单的markdown笔记
 - 笔记通过docsify布置到了gitee page上<https://xsro.gitee.io/cltasm>
 
 欢迎补充，只要是在DOSBox中能运行的TASM/MASM代码都欢迎添加
