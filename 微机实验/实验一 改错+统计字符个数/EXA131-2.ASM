@@ -1,4 +1,4 @@
-;修改后的代码
+;修改后的代码2
 ;EXA1312.ASM
 .386
 DATA SEGMENT USE16		;关键字segme nt 去除多余的空格

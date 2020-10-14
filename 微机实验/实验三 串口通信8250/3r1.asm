@@ -1,4 +1,7 @@
-;串口通信查询发查询收的代码
+;对微机系统的串行口进行自发自收内环测试，
+;需要发送的信息存储在数据段中，屏幕显示接收数据。
+; 由于缺乏外环环境，因此本实验采用内环方式。
+; 本代码使用查询方式发送、查询方式接受字符
 .386
 DATA	SEGMENT USE16
 TEXT	DB    'THE tie tied the tired tiger,THE CANNER CAN CAN A CAN '
