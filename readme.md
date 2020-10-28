@@ -1,7 +1,8 @@
 # Hi DOS ASM
 
-- :file_folder:文件夹[tasm](tasm/)和[微机实验](微机实验)是学习NJUPT微机时整理的一些代码
+- :file_folder:文件夹[微机学习代码](微机学习代码/)和[微机实验](微机实验)是学习NJUPT微机时整理的一些代码
 - :file_folder:文件夹[interesting](interesting/)是在网上寻找的有趣的代码
+- :file_folder:文件夹[简化段定义](简化段定义)是简化段定义的一些代码，需要MASM6.x以上版本
 - :evergreen_tree:[note](https://gitee.com/xsro/CLTASM/tree/note/)分支为一些简单的markdown笔记
 - 笔记通过docsify布置到了gitee page上<https://xsro.gitee.io/cltasm>
 
