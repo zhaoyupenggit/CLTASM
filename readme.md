@@ -8,6 +8,15 @@
 
 欢迎补充，只要是在DOSBox中能运行的TASM/MASM代码都欢迎添加
 
+## 清理
+
+使用GIT命令可以清除不被git跟踪的文件
+
+```sh
+git clean -xfd --dry-run 
+#加上--dry-run会显示将要清除的文件而不清除，不加则会自动清除
+```
+
 ## 来源
 
 这里是interesting文件夹的一些代码来源
