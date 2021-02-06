@@ -7,7 +7,16 @@
 /tools/work/*.*
 !/tools/work/ASM.BAT
 **.exe
+**.EXE
 **.obj
+**.OBJ
+**.com
+**.COM
+**.map
+**.MAP
+**.TR
+**.TD
+
 # dosbox工作日志文件
 stderr.txt
 stdout.txt
