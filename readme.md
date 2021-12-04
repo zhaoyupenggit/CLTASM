@@ -1,12 +1,13 @@
-# Hi DOS ASM
+# Collection of some assembly Codes
+
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/dosasm/dos-assembly-codes)
+
+欢迎补充，一些在DOSBox环境下可以运行的汇编代码，可以在[github.dev](https://github.com/dosasm/dos-assembly-codes)中在线编辑，部分可以运行。
 
 - :file_folder:文件夹[微机学习代码](微机学习代码/)和[微机实验](微机实验)是学习NJUPT微机时整理的一些代码
 - :file_folder:文件夹[interesting](interesting/)是在网上寻找的有趣的代码
 - :file_folder:文件夹[简化段定义](简化段定义)是简化段定义的一些代码，需要MASM6.x以上版本
-- :evergreen_tree:[note](https://gitee.com/xsro/CLTASM/tree/note/)分支为一些简单的markdown笔记
-- 笔记通过docsify布置到了gitee page上<https://xsro.gitee.io/cltasm>
 
-欢迎补充，只要是在DOSBox中能运行的TASM/MASM代码都欢迎添加
 
 ## 清理
 
@@ -17,7 +18,7 @@ git clean -xfd --dry-run
 #加上--dry-run会显示将要清除的文件而不清除，不加则会自动清除
 ```
 
-## 来源
+## 部分来源
 
 这里是interesting文件夹的一些代码来源
 
